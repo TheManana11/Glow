@@ -5,9 +5,8 @@
 <!-- project overview -->
 <img src="./readme/title2.svg"/>
 
-> Description here.
->
-> Description here.
+> Skinalyze is a mobile application that empowers users to understand and care for their skin through AI and machine learning. By analyzing selfies, the app detects skin conditions (acne, dryness, pigmentation, redness, etc.), assesses stress levels from facial cues, and provides tailored skincare and sun protection recommendations.
+> Using weather integration and automated reminders, it supports users in building consistent skincare routines, tracking improvements over time, and maintaining healthy skin.
 
 <br><br>
 
