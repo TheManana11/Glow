@@ -23,10 +23,12 @@
 <!-- Project Highlights -->
 <img src="./readme/title4.svg"/>
 
-### Add Title Here
+### Sexy features
 
-- List the sexy features.
-
+- ML models analyze your facial image to detect skin problems and assess emotional stress instantly.
+- AI recommends skincare products and sun protection based on skin type and the current weather.
+- Using n8n automation, the app sends care reminders, tracks skin changes over time, and logs your routine.
+  
 <br><br>
 
 <!-- Demo -->
