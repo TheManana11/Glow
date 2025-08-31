@@ -5,21 +5,19 @@ import { webhookMessage } from 'src/helpers/webhookMessageSent.helper';
 
 @Injectable()
 export class ChatService {
-
   async chat(body: any) {
-    
     const messageObj = body.entry[0].changes[0].value.messages?.[0];
 
-    if(!messageObj) return null;
+    if (!messageObj) return null;
     const senderId = messageObj.from;
     const messageText = messageObj.text?.body;
 
-    if(!messageText) return null;
+    if (!messageText) return null;
     console.log('User: ', messageText);
 
     const aiResponse = await call_gemini(messageText);
-    console.log("Ai response: ", aiResponse);
-    
+    console.log('Ai response: ', aiResponse);
+
     await webhookMessage(senderId, aiResponse);
     return 'EVENT_RECEIVED';
   }

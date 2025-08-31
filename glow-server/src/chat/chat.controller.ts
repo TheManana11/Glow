@@ -18,14 +18,13 @@ export class ChatController {
     return 'Error: tokens do not match';
   }
 
-
   @Post()
   async receive(@Body() body: any) {
     try {
       const response = this.chatService.chat(body);
-      return { response }
+      return { response };
     } catch (error) {
-      return {message: "Error", Error: error.message};
+      return { message: 'Error', Error: error.message };
     }
   }
 }

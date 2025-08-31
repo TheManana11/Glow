@@ -7,6 +7,7 @@ import { ConfigModule } from '@nestjs/config';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    ChatModule],
+    ChatModule,
+  ],
 })
 export class AppModule {}
