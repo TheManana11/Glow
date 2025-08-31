@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { call_gemini } from 'src/helpers/gemini_ai';
-// import { run_ai } from 'src/helpers/runAi.helper';
+import { call_model } from 'src/helpers/call_model';
 import { webhookMessage } from 'src/helpers/webhookMessageSent.helper';
 
 @Injectable()
@@ -15,7 +15,7 @@ export class ChatService {
     if (!messageText) return null;
     console.log('User: ', messageText);
 
-    const aiResponse = await call_gemini(messageText);
+    const aiResponse = await call_model(messageText);
     console.log('Ai response: ', aiResponse);
 
     await webhookMessage(senderId, aiResponse);

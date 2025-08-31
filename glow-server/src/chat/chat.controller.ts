@@ -19,7 +19,7 @@ export class ChatController {
   }
 
   @Post()
-  async receive(@Body() body: any) {
+  receive(@Body() body: any) {
     try {
       const response = this.chatService.chat(body);
       return { response };
