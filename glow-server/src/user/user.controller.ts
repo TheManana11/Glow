@@ -17,7 +17,10 @@ import { UpdatePasswordDto } from "./dto/updatePassword.dto";
 import type { Response } from "express";
 import { LoginDto } from "./dto/login.dto";
 import { AuthGuard } from "src/guard/auth.guard";
+import { ApiTags } from "@nestjs/swagger";
 
+
+@ApiTags('Users')
 @Controller("users")
 export class UserController {
   constructor(

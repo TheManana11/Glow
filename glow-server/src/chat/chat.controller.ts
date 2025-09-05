@@ -1,6 +1,9 @@
 import { Controller, Get, Post, Query, Body } from '@nestjs/common';
 import { ChatService } from './chat.service';
+import { ApiTags } from '@nestjs/swagger';
 
+
+@ApiTags('Webhook-Chat')
 @Controller('webhook')
 export class ChatController {
   constructor(private readonly chatService: ChatService) {}
