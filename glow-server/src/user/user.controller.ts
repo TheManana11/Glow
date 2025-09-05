@@ -1,69 +1,60 @@
-// import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-// import { UserService } from './user.service';
-// import { CreateUserDto } from './dto/create-user.dto';
-// import { UpdateUserDto } from './dto/update-user.dto';
-
-// @Controller('user')
-// export class UserController {
-//   constructor(private readonly userService: UserService) {}
-
-//   @Post()
-//   create(@Body() createUserDto: CreateUserDto) {
-//     return this.userService.create(createUserDto);
-//   }
-
-//   @Get()
-//   findAll() {
-//     return this.userService.findAll();
-//   }
-
-//   @Get(':id')
-//   findOne(@Param('id') id: string) {
-//     return this.userService.findOne(+id);
-//   }
-
-//   @Patch(':id')
-//   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-//     return this.userService.update(+id, updateUserDto);
-//   }
-
-//   @Delete(':id')
-//   remove(@Param('id') id: string) {
-//     return this.userService.remove(+id);
-//   }
-// }
-
-
-import { Controller, Get, Post, Body, Param, Put, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Res, HttpStatus } from '@nestjs/common';
 import { UserService } from './user.service';
-import { User } from './entities/user.entity';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
+import type { Response } from 'express';
 
 @Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post()
-  create(@Body() user: Partial<User>) {
-    return this.userService.create(user);
+  async create(@Body() createUserDto: CreateUserDto, @Res() res: Response) {
+    const user = await this.userService.create(createUserDto);
+    if(!user) return res.status(HttpStatus.BAD_REQUEST).json({ message: 'Failed to create user' })
+    return res.status(HttpStatus.CREATED).json({
+      message: 'User created successfully',
+      payload: user
+    });
   }
 
   @Get()
-  findAll() {
-    return this.userService.findAll();
+  async findAll() {
+    const users = await this.userService.findAll();
+    if(!users) return{ message: 'No Users' }
+    return {
+      message: 'Users fetched successfully',
+      payload: users
+    };
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.userService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    const user = await this.userService.findOne(id);
+    if(!user) return{ message: `Failed to get user with is ${id}` }
+    return {
+      message: `User with id ${id} fetched successfully`,
+      payload: user
+    };
   }
 
-  @Put(':id')
-  update(@Param('id') id: string, @Body() user: Partial<User>) {
-    return this.userService.update(+id, user);
+  @Patch(':id')
+  async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+    const user =  await this.userService.update(id, updateUserDto);
+    if(!user) return{ message: 'Failed to update user' }
+    return {
+      message: 'User updated successfully',
+      payload: user
+    };
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.userService.remove(+id);
+  async remove(@Param('id') id: string) {
+    const user = await this.userService.remove(id);
+    if(!user) return{ message: `Failed to remove user with id ${id}` }
+    return {
+      message: 'User deleted successfully',
+    };
   }
 }
+

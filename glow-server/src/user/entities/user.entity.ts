@@ -1,38 +1,31 @@
-// import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from "typeorm";
 
-// @Entity('users') // explicitly name the table
-// export class User {
-//     @PrimaryGeneratedColumn()
-//     id: number; // numeric ID
+export enum SkinType {
+  OILY = 'oily',
+  DRY = 'dry',
+  COMBINATION = 'combination',
+  NORMAL = 'normal',
+  SENSITIVE = 'sensitive',
+}
 
-//     @Column()
-//     first_name: string;
+export enum PrimarySkinConcern {
+  ACNE = 'acne',
+  WRINKLES = 'wrinkles',
+  DARK_SPOTS = 'dark_spots',
+  REDNESS = 'redness',
+  OTHER = 'other',
+}
 
-//     @Column()
-//     last_name: string;
-
-//     @Column({ unique: true })
-//     email: string;
-
-//     @Column()
-//     password: string;
-
-//     @Column()
-//     age: number;
-// }
-
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
-
-@Entity()
+@Entity('users') 
 export class User {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column({ length: 100 })
-  firstName: string;
+  first_name: string;
 
   @Column({ length: 100 })
-  lastName: string;
+  last_name: string;
 
   @Column({ unique: true })
   email: string;
@@ -40,6 +33,27 @@ export class User {
   @Column()
   password: string;
 
-  @Column({ default: true })
-  isActive: boolean;
+  @Column()
+  age: number;
+
+  @Column({
+    type: 'enum',
+    enum: SkinType,
+  })
+  skin_type: SkinType;
+
+  @Column({
+    type: 'enum',
+    enum: PrimarySkinConcern,
+  })
+  primary_skin_concern: PrimarySkinConcern;
+
+  @Column({ nullable: true })
+  image_url: string;
+
+  @CreateDateColumn({ type: 'timestamp' })
+  created_at: Date;
+
+  @UpdateDateColumn({ type: 'timestamp' })
+  updated_at: Date;
 }
