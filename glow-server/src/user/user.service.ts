@@ -6,6 +6,8 @@ import {
 } from "@nestjs/common";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
+import { UpdateProfileDto } from "./dto/updateProfilePic.dto";
+import { UpdatePasswordDto } from "./dto/updatePassword.dto";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { User } from "./entities/user.entity";
@@ -13,6 +15,8 @@ import type { Response } from "express";
 import * as bcrypt from "bcrypt";
 import { LoginDto } from "./dto/login.dto";
 import { JwtService } from "@nestjs/jwt";
+import { base64ToImage } from "src/helpers/base64_to_img";
+
 
 @Injectable()
 export class UserService {
@@ -94,6 +98,41 @@ export class UserService {
     return res.status(HttpStatus.OK).json({
       message: `User with id ${id} updated successfully`,
       payload: updated_user,
+    });
+  }
+
+
+ async updateProfilePic(id: string, updateProfileDto: UpdateProfileDto, res: Response) {
+  const base64String = updateProfileDto.image_url;
+
+  const filename = await base64ToImage(base64String, id);
+  if(!filename) return res.status(HttpStatus.BAD_REQUEST).json({ message: "Invalid image or unsupported image type, only accepts png, jpeg, jpg, webp" });
+
+  const filePathForDb = `uploads/${filename}`;
+  await this.userRepository.update(id, { image_url: filePathForDb });
+
+  const updated_user = await this.userRepository.findOneBy({ id });
+
+  return res.status(HttpStatus.OK).json({
+    message: `User with id ${id} updated successfully`,
+    payload: updated_user,
+  });
+}
+
+
+  async updatePassword(id: string, updatePasswordDto: UpdatePasswordDto, res: Response) {
+    const user = await this.userRepository.findOneBy({ id });
+    const match: boolean = await bcrypt.compare(updatePasswordDto.oldPassword, user?.password)
+    if(!match) return res.status(HttpStatus.BAD_REQUEST).json({ message: 'Old password is incorrect' });
+
+    if(updatePasswordDto.newPassword !== updatePasswordDto.confirmPassword) return res.status(HttpStatus.BAD_REQUEST).json({ message: 'Please make sure to confirm password right' });
+    
+    const hashed_password = await bcrypt.hash(updatePasswordDto.newPassword, 10);
+
+    await this.userRepository.update(id, { password: hashed_password });
+    return res.status(HttpStatus.OK).json({
+      message: `Password updated successfully`,
+      payload: user,
     });
   }
 
