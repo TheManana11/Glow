@@ -1,60 +1,56 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Res, HttpStatus } from '@nestjs/common';
-import { UserService } from './user.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-import type { Response } from 'express';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Res,
+} from "@nestjs/common";
+import { UserService } from "./user.service";
+import { CreateUserDto } from "./dto/create-user.dto";
+import { UpdateUserDto } from "./dto/update-user.dto";
+import type { Response } from "express";
+import { LoginDto } from "./dto/login.dto";
+import { JwtService } from "@nestjs/jwt";
 
-@Controller('users')
+@Controller("users")
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+  ) {}
 
-  @Post()
+  // register
+  @Post('register')
   async create(@Body() createUserDto: CreateUserDto, @Res() res: Response) {
-    const user = await this.userService.create(createUserDto);
-    if(!user) return res.status(HttpStatus.BAD_REQUEST).json({ message: 'Failed to create user' })
-    return res.status(HttpStatus.CREATED).json({
-      message: 'User created successfully',
-      payload: user
-    });
+    return await this.userService.create(createUserDto, res);
+  }
+
+  // login
+  @Post('login')
+  async signIn(@Body() loginDto: LoginDto, @Res() res: Response) {
+    return await this.userService.login(loginDto, res);
   }
 
   @Get()
-  async findAll() {
-    const users = await this.userService.findAll();
-    if(!users) return{ message: 'No Users' }
-    return {
-      message: 'Users fetched successfully',
-      payload: users
-    };
+  async findAll(@Res() res: Response) {
+    return await this.userService.findAll(res);
   }
 
-  @Get(':id')
-  async findOne(@Param('id') id: string) {
-    const user = await this.userService.findOne(id);
-    if(!user) return{ message: `Failed to get user with is ${id}` }
-    return {
-      message: `User with id ${id} fetched successfully`,
-      payload: user
-    };
+  @Get(":id")
+  async findOne(@Param("id") id: string, @Res() res: Response) {
+    return await this.userService.findOne(id, res);
+    
   }
 
-  @Patch(':id')
-  async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    const user =  await this.userService.update(id, updateUserDto);
-    if(!user) return{ message: 'Failed to update user' }
-    return {
-      message: 'User updated successfully',
-      payload: user
-    };
+  @Patch(":id")
+  async update(@Param("id") id: string, @Body() updateUserDto: UpdateUserDto, @Res() res: Response) {
+    return await this.userService.update(id, updateUserDto, res);
   }
 
-  @Delete(':id')
-  async remove(@Param('id') id: string) {
-    const user = await this.userService.remove(id);
-    if(!user) return{ message: `Failed to remove user with id ${id}` }
-    return {
-      message: 'User deleted successfully',
-    };
+  @Delete(":id")
+  async remove(@Param("id") id: string, @Res() res: Response) {
+    return await this.userService.remove(id, res);
   }
 }
-

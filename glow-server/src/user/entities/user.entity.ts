@@ -8,6 +8,11 @@ export enum SkinType {
   SENSITIVE = 'sensitive',
 }
 
+export enum role {
+  PATIENT = 'patient',
+  DOCTOR = 'doctor',
+}
+
 export enum PrimarySkinConcern {
   ACNE = 'acne',
   WRINKLES = 'wrinkles',
@@ -33,7 +38,7 @@ export class User {
   @Column()
   password: string;
 
-  @Column()
+  @Column({ type: 'int' })
   age: number;
 
   @Column({
@@ -50,6 +55,13 @@ export class User {
 
   @Column({ nullable: true })
   image_url: string;
+ 
+  @Column({
+    type: 'enum',
+    enum: role,
+    default: role.PATIENT
+  })
+  role: role;
 
   @CreateDateColumn({ type: 'timestamp' })
   created_at: Date;
