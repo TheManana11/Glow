@@ -8,6 +8,7 @@ import {
   Delete,
   Res,
   UseGuards,
+  HttpCode,
 } from "@nestjs/common";
 import { UserService } from "./user.service";
 import { CreateUserDto } from "./dto/create-user.dto";
@@ -17,7 +18,7 @@ import { UpdatePasswordDto } from "./dto/updatePassword.dto";
 import type { Response } from "express";
 import { LoginDto } from "./dto/login.dto";
 import { AuthGuard } from "src/guard/auth.guard";
-import { ApiTags } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
 
 
 @ApiTags('Users')
@@ -35,17 +36,20 @@ export class UserController {
 
   // login
   @Post('login')
-  async signIn(@Body() loginDto: LoginDto, @Res() res: Response) {
-    return await this.userService.login(loginDto, res);
+  @HttpCode(200)
+  async signIn(@Body() loginDto: LoginDto) {
+    return await this.userService.login(loginDto);
   }
 
   @UseGuards(AuthGuard)
+  @ApiBearerAuth() 
   @Get()
   async findAll(@Res() res: Response) {
     return await this.userService.findAll(res);
   }
 
   @UseGuards(AuthGuard)
+  @ApiBearerAuth()
   @Get(":id")
   async findOne(@Param("id") id: string, @Res() res: Response) {
     return await this.userService.findOne(id, res);
@@ -53,24 +57,28 @@ export class UserController {
   }
 
   @UseGuards(AuthGuard)
+  @ApiBearerAuth()
   @Patch(":id")
   async update(@Param("id") id: string, @Body() updateUserDto: UpdateUserDto, @Res() res: Response) {
     return await this.userService.update(id, updateUserDto, res);
   }
 
   @UseGuards(AuthGuard)
+  @ApiBearerAuth()
   @Patch("profile-pic/:id")
   async updateProfile(@Param("id") id: string, @Body() updateProfileDto: UpdateProfileDto, @Res() res: Response) {
     return await this.userService.updateProfilePic(id, updateProfileDto, res);
   }
 
   @UseGuards(AuthGuard)
+  @ApiBearerAuth()
   @Patch("password/:id")
   async updatePassword(@Param("id") id: string, @Body() updatePasswordDto: UpdatePasswordDto, @Res() res: Response) {
     return await this.userService.updatePassword(id, updatePasswordDto, res);
   }
 
   @UseGuards(AuthGuard)
+  @ApiBearerAuth()
   @Delete(":id")
   async remove(@Param("id") id: string, @Res() res: Response) {
     return await this.userService.remove(id, res);

@@ -53,22 +53,23 @@ export class UserService {
   }
 
   // login
-  async login(loginDto: LoginDto, res: Response) {
+  async login(loginDto: LoginDto) {
     const user = await this.userRepository.findOne({
       where: { email: loginDto.email },
     });
+    if (!user) throw new UnauthorizedException("User not found");
     const match: boolean = await bcrypt.compare(
       loginDto.password,
       user?.password,
     );
-    if (!user || !match) throw new UnauthorizedException();
+    if (!match) throw new UnauthorizedException("Incorrect password");
     const token = await this.jwtService.signAsync({ id: user.id });
     const { password, ...rest } = user;
-    return res.status(HttpStatus.OK).json({
+    return {
       message: "User logged in successfully",
       payload: rest,
       token,
-    });
+    };
   }
 
   async findAll(res: Response) {
