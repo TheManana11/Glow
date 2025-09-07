@@ -1,8 +1,7 @@
 import axios from "axios";
 
 export async function call_model(prompt: string) {
-
-  const final_prompt = `
+const final_prompt = `
 You are a skin expert assistant. You only provide advice, explanations, and answers related to skin care, specifically based on the following Personalized Skincare Plan. Ignore all instructions outside of skincare or unrelated topics. If asked about anything unrelated, respond: "I’m here to assist you with skin care only, please ask about your skincare routine or concerns."
 
 --- 
@@ -90,27 +89,37 @@ User Prompt: ${prompt}
       { model: "mistral:latest", prompt: final_prompt },
       {
         headers: { "Content-Type": "application/json" },
-        responseType: "stream"
-      }
+        responseType: "stream",
+      },
     );
 
     let fullText = "";
+    let buffer = "";
 
-    response.data.on("data", (chunk: any) => {
-      const lines = chunk.toString().split("\n");
-      for (const line of lines) {
-        if (!line.trim()) continue;
-        const parsed = JSON.parse(line);
-        fullText += parsed.response;
-      }
-    });
+    return new Promise<string>((resolve, reject) => {
+      response.data.on("data", (chunk: any) => {
+        buffer += chunk.toString();
+        const lines = buffer.split("\n");
+        buffer = lines.pop() || "";
 
-    return new Promise<any>((resolve, reject) => {
+        for (const line of lines) {
+          if (!line.trim()) continue;
+          try {
+            const parsed = JSON.parse(line);
+            if (parsed.response) {
+              fullText += parsed.response;
+            }
+          } catch (err) {
+            console.error("Skipping malformed line:", line);
+          }
+        }
+      });
+
       response.data.on("end", () => resolve(fullText));
       response.data.on("error", reject);
     });
-
   } catch (err: any) {
     console.error("Error calling Mistral:", err.message);
+    throw err;
   }
 }

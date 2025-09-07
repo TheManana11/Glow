@@ -21,7 +21,7 @@ async function bootstrap() {
     .setTitle('My Glow APIs')                
     .setDescription('API documentation for my project')
     .setVersion('1.0')                 
-    .addBearerAuth()                    // Add JWT auth option in Swagger
+    .addBearerAuth()                
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
