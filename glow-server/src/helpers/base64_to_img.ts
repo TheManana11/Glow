@@ -2,7 +2,7 @@ import { HttpStatus } from "@nestjs/common";
 import * as fs from 'fs';
 import * as path from 'path';
 
-export async function base64ToImage(base64String: string, id: string) {
+export async function base64ToImage(base64String: string) {
   const matches = base64String.match(/^data:(image\/\w+);base64,(.+)$/);
     if (!matches) {
       return null;
@@ -25,7 +25,7 @@ export async function base64ToImage(base64String: string, id: string) {
     }
   
     // Save file with unique name
-    const filename = `profile_${id}_${Date.now()}.${extension}`;
+    const filename = `profile_${Date.now()}.${extension}`;
     const savePath = path.join(uploadDir, filename);
     await fs.promises.writeFile(savePath, buffer);
 

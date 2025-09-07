@@ -106,7 +106,7 @@ export class UserService {
  async updateProfilePic(id: string, updateProfileDto: UpdateProfileDto, res: Response) {
   const base64String = updateProfileDto.image_url;
 
-  const filename = await base64ToImage(base64String, id);
+  const filename = await base64ToImage(base64String);
   if(!filename) return res.status(HttpStatus.BAD_REQUEST).json({ message: "Invalid image or unsupported image type, only accepts png, jpeg, jpg, webp" });
 
   const filePathForDb = `uploads/${filename}`;
