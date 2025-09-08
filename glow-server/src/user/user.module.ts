@@ -6,6 +6,7 @@ import { User } from "./entities/user.entity";
 import { JwtModule } from "@nestjs/jwt";
 import { HelpersModule } from "src/helpers/helpers.module";
 import { HelpersService } from "src/helpers/helpers.service";
+import { ErrorService } from "src/helpers/errors.service";
 
 @Module({
   imports: [
@@ -18,7 +19,7 @@ import { HelpersService } from "src/helpers/helpers.service";
     HelpersModule
   ],
   controllers: [UserController],
-  providers: [UserService, HelpersService],
+  providers: [UserService, HelpersService, ErrorService],
   exports: [UserService],
 })
 export class UserModule {}

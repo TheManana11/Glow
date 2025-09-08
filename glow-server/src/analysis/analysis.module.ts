@@ -7,10 +7,11 @@ import { TokenService } from './token.service';
 import { User } from 'src/user/entities/user.entity';
 import { HelpersModule } from 'src/helpers/helpers.module';
 import { HelpersService } from 'src/helpers/helpers.service';
+import { ErrorService } from 'src/helpers/errors.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Analysis, User]), HelpersModule],
   controllers: [AnalysisController],
-  providers: [AnalysisService, TokenService, HelpersService],
+  providers: [AnalysisService, TokenService, HelpersService, ErrorService],
 })
 export class AnalysisModule {}

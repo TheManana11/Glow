@@ -30,6 +30,7 @@ export class UserController {
 
   // register
   @Post('register')
+  @HttpCode(201)
   async create(@Body() createUserDto: CreateUserDto, @Res() res: Response) {
     return await this.userService.create(createUserDto, res);
   }
@@ -43,6 +44,7 @@ export class UserController {
 
   @UseGuards(AuthGuard)
   @ApiBearerAuth() 
+  @HttpCode(200)
   @Get()
   async findAll(@Res() res: Response) {
     return await this.userService.findAll(res);
@@ -50,6 +52,7 @@ export class UserController {
 
   @UseGuards(AuthGuard)
   @ApiBearerAuth()
+  @HttpCode(200)
   @Get(":id")
   async findOne(@Param("id") id: string, @Res() res: Response) {
     return await this.userService.findOne(id, res);
@@ -58,6 +61,7 @@ export class UserController {
 
   @UseGuards(AuthGuard)
   @ApiBearerAuth()
+  @HttpCode(200)
   @Patch(":id")
   async update(@Param("id") id: string, @Body() updateUserDto: UpdateUserDto, @Res() res: Response) {
     return await this.userService.update(id, updateUserDto, res);
@@ -65,6 +69,7 @@ export class UserController {
 
   @UseGuards(AuthGuard)
   @ApiBearerAuth()
+  @HttpCode(200)
   @Patch("profile-pic/:id")
   async updateProfile(@Param("id") id: string, @Body() updateProfileDto: UpdateProfileDto, @Res() res: Response) {
     return await this.userService.updateProfilePic(id, updateProfileDto, res);
@@ -72,6 +77,7 @@ export class UserController {
 
   @UseGuards(AuthGuard)
   @ApiBearerAuth()
+  @HttpCode(200)
   @Patch("password/:id")
   async updatePassword(@Param("id") id: string, @Body() updatePasswordDto: UpdatePasswordDto, @Res() res: Response) {
     return await this.userService.updatePassword(id, updatePasswordDto, res);
@@ -79,6 +85,7 @@ export class UserController {
 
   @UseGuards(AuthGuard)
   @ApiBearerAuth()
+  @HttpCode(200)
   @Delete(":id")
   async remove(@Param("id") id: string, @Res() res: Response) {
     return await this.userService.remove(id, res);

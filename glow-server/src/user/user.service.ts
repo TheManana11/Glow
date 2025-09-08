@@ -1,9 +1,4 @@
-import {
-  HttpStatus,
-  Injectable,
-  Res,
-  UnauthorizedException,
-} from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
 import { UpdateProfileDto } from "./dto/updateProfilePic.dto";
@@ -16,6 +11,7 @@ import * as bcrypt from "bcrypt";
 import { LoginDto } from "./dto/login.dto";
 import { JwtService } from "@nestjs/jwt";
 import { HelpersService } from "src/helpers/helpers.service";
+import { ErrorService } from "src/helpers/errors.service";
 
 
 @Injectable()
@@ -24,7 +20,8 @@ export class UserService {
     @InjectRepository(User)
     private userRepository: Repository<User>,
     private jwtService: JwtService,
-    private readonly helperService: HelpersService
+    private readonly helperService: HelpersService,
+    private readonly errorService: ErrorService
   ) {}
 
   // register
@@ -32,10 +29,7 @@ export class UserService {
     const email = createUserDto.email;
 
     const existing_user = await this.userRepository.findOneBy({ email });
-    if (existing_user)
-      return res
-        .status(HttpStatus.BAD_REQUEST)
-        .json({ message: "User already exists" });
+    this.errorService.BadRequest("User already exists", existing_user);
 
     const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
     const new_user = this.userRepository.create({
@@ -46,11 +40,11 @@ export class UserService {
 
     const token = await this.jwtService.signAsync({ id: user.id });
     const { password, ...rest } = user;
-    return res.status(HttpStatus.CREATED).json({
+    return {
       message: "User created successfully",
       payload: rest,
       token,
-    });
+    };
   }
 
   // login
@@ -58,49 +52,45 @@ export class UserService {
     const user = await this.userRepository.findOne({
       where: { email: loginDto.email },
     });
-    if (!user) throw new UnauthorizedException("User not found");
+    this.errorService.Unauthorized("User not found", !user);
     const match: boolean = await bcrypt.compare(
       loginDto.password,
       user?.password,
     );
-    if (!match) throw new UnauthorizedException("Incorrect password");
-    const token = await this.jwtService.signAsync({ id: user.id });
-    const { password, ...rest } = user;
+    this.errorService.Unauthorized("Incorrect Password", !match);
+    const token = await this.jwtService.signAsync({ id: user?.id });
     return {
       message: "User logged in successfully",
-      payload: rest,
+      payload: user,
       token,
     };
   }
 
   async findAll(res: Response) {
     const users = await this.userRepository.find();
-    if (!users)
-      return res
-        .status(HttpStatus.NOT_FOUND)
-        .json({ message: "No Users found in the database" });
-    return res.status(HttpStatus.OK).json({
+    this.errorService.NotFound("No Users found in the database", !users);
+    return {
       message: "Users fetched successfully",
       payload: users,
-    });
+    };
   }
 
   async findOne(id: string, res: Response) {
     const user = await this.userRepository.findOneBy({ id });
-    if (!user) return res.status(HttpStatus.NOT_FOUND).json({ message: `Failed to get user with is ${id}` });
-    return res.status(HttpStatus.OK).json({
+    this.errorService.NotFound(`Failed to get user with is ${id}`, !user);
+    return {
       message: `User with id ${id} fetched successfully`,
       payload: user,
-    });
+    };
   }
 
   async update(id: string, updateUserDto: UpdateUserDto, res: Response) {
     await this.userRepository.update(id, updateUserDto);
     const updated_user = this.userRepository.findOneBy({ id });
-    return res.status(HttpStatus.OK).json({
+    return {
       message: `User with id ${id} updated successfully`,
       payload: updated_user,
-    });
+    };
   }
 
 
@@ -108,41 +98,41 @@ export class UserService {
   const base64String = updateProfileDto.image_url;
 
   const filename = await this.helperService.base64ToImage(base64String, "profiles");
-  if(!filename) return res.status(HttpStatus.BAD_REQUEST).json({ message: "Invalid image or unsupported image type, only accepts png, jpeg, jpg, webp" });
+  this.errorService.BadRequest("Invalid image or unsupported image type, only accepts png, jpeg, jpg, webp", !filename);
 
   const filePathForDb = `uploads/profiles/${filename}`;
   await this.userRepository.update(id, { image_url: filePathForDb });
 
   const updated_user = await this.userRepository.findOneBy({ id });
 
-  return res.status(HttpStatus.OK).json({
+  return {
     message: `User with id ${id} updated successfully`,
     payload: updated_user,
-  });
+  };
 }
 
 
   async updatePassword(id: string, updatePasswordDto: UpdatePasswordDto, res: Response) {
     const user = await this.userRepository.findOneBy({ id });
     const match: boolean = await bcrypt.compare(updatePasswordDto.oldPassword, user?.password)
-    if(!match) return res.status(HttpStatus.BAD_REQUEST).json({ message: 'Old password is incorrect' });
+    this.errorService.BadRequest('Old password is incorrect', !match);
 
-    if(updatePasswordDto.newPassword !== updatePasswordDto.confirmPassword) return res.status(HttpStatus.BAD_REQUEST).json({ message: 'Please make sure to confirm password right' });
+    this.errorService.BadRequest('Please make sure to confirm password right', updatePasswordDto.newPassword !== updatePasswordDto.confirmPassword);
     
     const hashed_password = await bcrypt.hash(updatePasswordDto.newPassword, 10);
 
     await this.userRepository.update(id, { password: hashed_password });
-    return res.status(HttpStatus.OK).json({
+    return {
       message: `Password updated successfully`,
       payload: user,
-    });
+    };
   }
 
   async remove(id: string, res: Response) {
     const deleted_user = await this.userRepository.delete({ id });
-    return res.status(HttpStatus.OK).json({
+    return {
       message: `User with id ${id} deleted successfully`,
       payload: deleted_user,
-    });
+    };
   }
 }

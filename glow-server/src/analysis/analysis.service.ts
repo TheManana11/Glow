@@ -1,9 +1,4 @@
-import {
-  BadRequestException,
-  Injectable,
-  InternalServerErrorException,
-  NotFoundException,
-} from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import { CreateAnalysisDto } from "./dto/create-analysis.dto";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
@@ -11,6 +6,7 @@ import { Analysis } from "./entities/analysis.entity";
 import { TokenService } from "./token.service";
 import { User } from "src/user/entities/user.entity";
 import { HelpersService } from "src/helpers/helpers.service";
+import { ErrorService } from "src/helpers/errors.service";
 
 @Injectable()
 export class AnalysisService {
@@ -23,14 +19,12 @@ export class AnalysisService {
 
     private tokenService: TokenService,
     private helperService: HelpersService,
+    private errorService: ErrorService,
   ) {}
 
   async create(req: Request, createAnalysisDto: CreateAnalysisDto) {
     const file_name = await this.helperService.base64ToImage(createAnalysisDto.image_url, "analysis");
-    if (!file_name)
-      throw new BadRequestException(
-        "Image is corrupted or image type  is invalid, valid types are png, jpg, jpeg, webp",
-      );
+    this.errorService.BadRequest("Image is corrupted or image type  is invalid, valid types are png, jpg, jpeg, webp", !file_name);
 
     const token = (req.headers as any).authorization;
     const user_id = this.tokenService.getUserIdFromToken(token);
@@ -55,15 +49,13 @@ export class AnalysisService {
         message: "Analysis done successfully",
       };
     } catch (error) {
-      throw new InternalServerErrorException(
-        "Server Error, please try again later",
-      );
+      this.errorService.InternalServerError("Server Error, please try again later", error);
     }
   }
 
   async findAll() {
     const all_analysis = await this.analysisRepository.find();
-    if (!all_analysis) throw new NotFoundException("No analysis found");
+    this.errorService.NotFound("No analysis found", !all_analysis);
     return {
       message: "All analysis fetched successfully",
       payload: all_analysis,
@@ -75,20 +67,21 @@ export class AnalysisService {
     const user_id = this.tokenService.getUserIdFromToken(token);
     const user = await this.userRepository.findOneBy({ id: user_id });
 
-    if (!user) throw new NotFoundException("User not found");
+    this.errorService.NotFound("User not found", !user);
 
     const analysis = await this.analysisRepository.findBy({ user_id });
-    if (!analysis)
-      throw new NotFoundException("No analysis with for this user found");
+    this.errorService.NotFound("No analysis found", !analysis);
+
     return {
-      message: `All Analysis for user ${user.first_name} fetched successfully`,
+      message: `All Analysis for user ${user?.first_name} fetched successfully`,
       payload: analysis,
     };
   }
 
   async findOne(id: string) {
     const analysis = await this.analysisRepository.findOneBy({ id });
-    if (!analysis) throw new NotFoundException("No analysis found");
+    this.errorService.NotFound("No analysis found", !analysis);
+
     return {
       message: `Analysis with id ${id} fetched successfully`,
       payload: analysis,
@@ -100,17 +93,16 @@ export class AnalysisService {
     const user_id = this.tokenService.getUserIdFromToken(token);
     const user = await this.userRepository.findOneBy({ id: user_id });
 
-    if (!user) throw new NotFoundException("User not found");
+    this.errorService.NotFound("USer not found", !user);
 
     const analysis = await this.analysisRepository.findOne({
       where: { user_id },
       order: { created_at: "DESC" },
     });
 
-    if (!analysis)
-      throw new NotFoundException("No analysis with for this user found");
+    this.errorService.NotFound("No analysis with for this user found", !analysis);
     return {
-      message: `Analysis for user ${user.first_name} fetched successfully`,
+      message: `Analysis for user ${user?.first_name} fetched successfully`,
       payload: analysis,
     };
   }
