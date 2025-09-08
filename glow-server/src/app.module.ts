@@ -7,12 +7,13 @@ import { User } from './user/entities/user.entity'
 import { AnalysisModule } from './analysis/analysis.module';
 import { Analysis } from "./analysis/entities/analysis.entity";
 import { HelpersModule } from './helpers/helpers.module';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler'
+import { APP_GUARD } from "@nestjs/core";
+import { ENV_CONFIG, THROTTLE_CONFIG } from "./config";
 
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      isGlobal: true,
-    }),
+    ConfigModule.forRoot(ENV_CONFIG),
     TypeOrmModule.forRoot({
       type: "postgres",
       host: process.env.DB_HOST,
@@ -23,10 +24,12 @@ import { HelpersModule } from './helpers/helpers.module';
       entities: [User, Analysis],
       synchronize: true,
     }),
+    ThrottlerModule.forRoot(THROTTLE_CONFIG),
     ChatModule,
     UserModule,
     AnalysisModule,
     HelpersModule,
   ],
+  providers: [ { provide: APP_GUARD, useClass: ThrottlerGuard } ],
 })
 export class AppModule {}

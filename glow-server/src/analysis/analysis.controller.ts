@@ -12,6 +12,7 @@ import { AnalysisService } from "./analysis.service";
 import { CreateAnalysisDto } from "./dto/create-analysis.dto";
 import { AuthGuard } from "src/guard/auth.guard";
 import { ApiBearerAuth } from "@nestjs/swagger";
+import { days, Throttle } from "@nestjs/throttler";
 
 @UseGuards(AuthGuard)
 @ApiBearerAuth()
@@ -20,6 +21,7 @@ export class AnalysisController {
   constructor(private readonly analysisService: AnalysisService) {}
 
   @Post()
+  @Throttle({ short: { limit: 1, ttl: days(1) } })
   @HttpCode(201)
   create(@Req() req: Request, @Body() createAnalysisDto: CreateAnalysisDto) {
     return this.analysisService.create(req, createAnalysisDto);

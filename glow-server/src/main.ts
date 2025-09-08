@@ -1,29 +1,17 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { ValidationPipe } from '@nestjs/common';
 import { join } from 'path';
 import * as express from 'express';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { SwaggerModule } from '@nestjs/swagger';
+import { CORS_CONFIG, SWAGGER_CONFIG, VALIDATOR_CONFIG } from './config'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  app.useGlobalPipes(new ValidationPipe({
-    whitelist: true,             
-    forbidNonWhitelisted: true,  
-    transform: true,             
-    transformOptions: {
-      enableImplicitConversion: true, 
-    },
-  }));
+  app.enableCors(CORS_CONFIG);
+  app.useGlobalPipes(VALIDATOR_CONFIG);
 
-  const config = new DocumentBuilder()
-    .setTitle('My Glow APIs')                
-    .setDescription('API documentation for my project')
-    .setVersion('1.0')                 
-    .addBearerAuth()                
-    .build();
-
+  const config = SWAGGER_CONFIG;
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 
