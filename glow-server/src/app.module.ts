@@ -6,6 +6,7 @@ import { UserModule } from './user/user.module';
 import { User } from './user/entities/user.entity'
 import { AnalysisModule } from './analysis/analysis.module';
 import { Analysis } from "./analysis/entities/analysis.entity";
+import { HelpersModule } from './helpers/helpers.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { Analysis } from "./analysis/entities/analysis.entity";
     ChatModule,
     UserModule,
     AnalysisModule,
+    HelpersModule,
   ],
 })
 export class AppModule {}

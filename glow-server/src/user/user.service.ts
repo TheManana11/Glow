@@ -15,7 +15,7 @@ import type { Response } from "express";
 import * as bcrypt from "bcrypt";
 import { LoginDto } from "./dto/login.dto";
 import { JwtService } from "@nestjs/jwt";
-import { base64ToImage } from "src/helpers/base64_to_img";
+import { HelpersService } from "src/helpers/helpers.service";
 
 
 @Injectable()
@@ -24,6 +24,7 @@ export class UserService {
     @InjectRepository(User)
     private userRepository: Repository<User>,
     private jwtService: JwtService,
+    private readonly helperService: HelpersService
   ) {}
 
   // register
@@ -106,10 +107,10 @@ export class UserService {
  async updateProfilePic(id: string, updateProfileDto: UpdateProfileDto, res: Response) {
   const base64String = updateProfileDto.image_url;
 
-  const filename = await base64ToImage(base64String);
+  const filename = await this.helperService.base64ToImage(base64String, "profiles");
   if(!filename) return res.status(HttpStatus.BAD_REQUEST).json({ message: "Invalid image or unsupported image type, only accepts png, jpeg, jpg, webp" });
 
-  const filePathForDb = `uploads/${filename}`;
+  const filePathForDb = `uploads/profiles/${filename}`;
   await this.userRepository.update(id, { image_url: filePathForDb });
 
   const updated_user = await this.userRepository.findOneBy({ id });

@@ -5,13 +5,12 @@ import {
   NotFoundException,
 } from "@nestjs/common";
 import { CreateAnalysisDto } from "./dto/create-analysis.dto";
-import { base64ToImage } from "src/helpers/base64_to_img";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { Analysis } from "./entities/analysis.entity";
 import { TokenService } from "./token.service";
-import { call_openAI } from "src/helpers/openAI_call";
 import { User } from "src/user/entities/user.entity";
+import { HelpersService } from "src/helpers/helpers.service";
 
 @Injectable()
 export class AnalysisService {
@@ -23,10 +22,11 @@ export class AnalysisService {
     private userRepository: Repository<User>,
 
     private tokenService: TokenService,
+    private helperService: HelpersService,
   ) {}
 
   async create(req: Request, createAnalysisDto: CreateAnalysisDto) {
-    const file_name = await base64ToImage(createAnalysisDto.image_url);
+    const file_name = await this.helperService.base64ToImage(createAnalysisDto.image_url, "analysis");
     if (!file_name)
       throw new BadRequestException(
         "Image is corrupted or image type  is invalid, valid types are png, jpg, jpeg, webp",
@@ -35,14 +35,14 @@ export class AnalysisService {
     const token = (req.headers as any).authorization;
     const user_id = this.tokenService.getUserIdFromToken(token);
 
-    const image = `https://1ac3beb4d0fa.ngrok-free.app/uploads/${file_name}`;
-    const res = await call_openAI(image);
+    const image = `https://e1035c3895e9.ngrok-free.app/uploads/analysis/${file_name}`;
+    const res = await this.helperService.call_openAI(image);
     const res_final = JSON.parse(res);
 
     const problems_array = res_final.problems;
     const analysis_object = this.analysisRepository.create({
       user: { id: user_id },
-      image_url: `uploads/${file_name}`,
+      image_url: `uploads/analysis/${file_name}`,
       problems: res_final.problems,
       skin_care_routine: res_final.skin_care_routine,
       scores: res_final.scores,
@@ -70,6 +70,22 @@ export class AnalysisService {
     };
   }
 
+  async findAllByUser(req: Request) {
+    const token = (req.headers as any).authorization;
+    const user_id = this.tokenService.getUserIdFromToken(token);
+    const user = await this.userRepository.findOneBy({ id: user_id });
+
+    if (!user) throw new NotFoundException("User not found");
+
+    const analysis = await this.analysisRepository.findBy({ user_id });
+    if (!analysis)
+      throw new NotFoundException("No analysis with for this user found");
+    return {
+      message: `All Analysis for user ${user.first_name} fetched successfully`,
+      payload: analysis,
+    };
+  }
+
   async findOne(id: string) {
     const analysis = await this.analysisRepository.findOneBy({ id });
     if (!analysis) throw new NotFoundException("No analysis found");
@@ -82,12 +98,17 @@ export class AnalysisService {
   async findByUser(req: Request) {
     const token = (req.headers as any).authorization;
     const user_id = this.tokenService.getUserIdFromToken(token);
-    const user = await this.userRepository.findOneBy({ id: user_id })
+    const user = await this.userRepository.findOneBy({ id: user_id });
 
-    if(!user) throw new NotFoundException("User not found");
+    if (!user) throw new NotFoundException("User not found");
 
-    const analysis = await this.analysisRepository.findOneBy({ user_id });
-    if (!analysis) throw new NotFoundException("No analysis with for this user found");
+    const analysis = await this.analysisRepository.findOne({
+      where: { user_id },
+      order: { created_at: "DESC" },
+    });
+
+    if (!analysis)
+      throw new NotFoundException("No analysis with for this user found");
     return {
       message: `Analysis for user ${user.first_name} fetched successfully`,
       payload: analysis,

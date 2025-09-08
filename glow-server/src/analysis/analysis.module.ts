@@ -5,10 +5,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Analysis } from './entities/analysis.entity';
 import { TokenService } from './token.service';
 import { User } from 'src/user/entities/user.entity';
+import { HelpersModule } from 'src/helpers/helpers.module';
+import { HelpersService } from 'src/helpers/helpers.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Analysis, User])],
+  imports: [TypeOrmModule.forFeature([Analysis, User]), HelpersModule],
   controllers: [AnalysisController],
-  providers: [AnalysisService, TokenService],
+  providers: [AnalysisService, TokenService, HelpersService],
 })
 export class AnalysisModule {}
