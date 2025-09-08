@@ -23,8 +23,14 @@ export class AnalysisService {
   ) {}
 
   async create(req: Request, createAnalysisDto: CreateAnalysisDto) {
-    const file_name = await this.helperService.base64ToImage(createAnalysisDto.image_url, "analysis");
-    this.errorService.BadRequest("Image is corrupted or image type  is invalid, valid types are png, jpg, jpeg, webp", !file_name);
+    const file_name = await this.helperService.base64ToImage(
+      createAnalysisDto.image_url,
+      "analysis",
+    );
+    this.errorService.BadRequest(
+      "Image is corrupted or image type  is invalid, valid types are png, jpg, jpeg, webp",
+      !file_name,
+    );
 
     const token = (req.headers as any).authorization;
     const user_id = this.tokenService.getUserIdFromToken(token);
@@ -33,11 +39,11 @@ export class AnalysisService {
     const res = await this.helperService.call_openAI(image);
     const res_final = JSON.parse(res);
 
-    const problems_array = res_final.problems;
     const analysis_object = this.analysisRepository.create({
       user: { id: user_id },
       image_url: `uploads/analysis/${file_name}`,
       problems: res_final.problems,
+      goals: res_final.goals,
       skin_care_routine: res_final.skin_care_routine,
       scores: res_final.scores,
       estimated_days_progress: res_final.estimated_days_progress,
@@ -49,7 +55,10 @@ export class AnalysisService {
         message: "Analysis done successfully",
       };
     } catch (error) {
-      this.errorService.InternalServerError("Server Error, please try again later", error);
+      this.errorService.InternalServerError(
+        "Server Error, please try again later",
+        error,
+      );
     }
   }
 
@@ -69,7 +78,10 @@ export class AnalysisService {
 
     this.errorService.NotFound("User not found", !user);
 
-    const analysis = await this.analysisRepository.findBy({ user_id });
+    const analysis = await this.analysisRepository.find({
+      where: { user_id },
+      order: { created_at: "DESC" },
+    });
     this.errorService.NotFound("No analysis found", !analysis);
 
     return {
@@ -100,7 +112,10 @@ export class AnalysisService {
       order: { created_at: "DESC" },
     });
 
-    this.errorService.NotFound("No analysis with for this user found", !analysis);
+    this.errorService.NotFound(
+      "No analysis with for this user found",
+      !analysis,
+    );
     return {
       message: `Analysis for user ${user?.first_name} fetched successfully`,
       payload: analysis,

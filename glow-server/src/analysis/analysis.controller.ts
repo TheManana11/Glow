@@ -31,7 +31,7 @@ export class AnalysisController {
     return this.analysisService.findAll();
   }
 
-  @Get()
+  @Get('/all-user-analysis')
   @HttpCode(200)
   findAllByUser(@Req() req: Request) {
     return this.analysisService.findAllByUser(req);

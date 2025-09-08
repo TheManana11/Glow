@@ -36,6 +36,11 @@ export class Analysis {
   @Column({ type: "jsonb" })
   @IsObject()
   @IsNotEmptyObject()
+  goals: Record<string, any>;
+
+  @Column({ type: "jsonb" })
+  @IsObject()
+  @IsNotEmptyObject()
   problems: Record<string, any>;
 
   @Column({ type: "jsonb" })
