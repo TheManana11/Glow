@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from "typeorm";
+import { Analysis } from "src/analysis/entities/analysis.entity";
+import { Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToMany } from "typeorm";
 
 export enum SkinType {
   OILY = 'oily',
@@ -68,4 +69,7 @@ export class User {
 
   @UpdateDateColumn({ type: 'timestamp' })
   updated_at: Date;
+
+  @OneToMany(() => Analysis, (analysis) => analysis.user, {})
+  analyses: Analysis[];
 }

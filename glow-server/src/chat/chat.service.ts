@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { call_gemini } from 'src/helpers/gemini_ai';
 import { call_model } from 'src/helpers/call_model';
 import { webhookMessage } from 'src/helpers/webhookMessageSent.helper';
 

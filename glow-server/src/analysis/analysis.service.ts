@@ -1,94 +1,96 @@
-import { Injectable } from "@nestjs/common";
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from "@nestjs/common";
 import { CreateAnalysisDto } from "./dto/create-analysis.dto";
 import { base64ToImage } from "src/helpers/base64_to_img";
-import OpenAI from 'openai';
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
+import { Analysis } from "./entities/analysis.entity";
+import { TokenService } from "./token.service";
+import { call_openAI } from "src/helpers/openAI_call";
+import { User } from "src/user/entities/user.entity";
 
 @Injectable()
 export class AnalysisService {
-  private client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+  constructor(
+    @InjectRepository(Analysis)
+    private analysisRepository: Repository<Analysis>,
 
-  async create(createAnalysisDto: CreateAnalysisDto) {
-    const image_url = createAnalysisDto.image_url;
-    const file_name = await base64ToImage(image_url);
+    @InjectRepository(User)
+    private userRepository: Repository<User>,
+
+    private tokenService: TokenService,
+  ) {}
+
+  async create(req: Request, createAnalysisDto: CreateAnalysisDto) {
+    const file_name = await base64ToImage(createAnalysisDto.image_url);
+    if (!file_name)
+      throw new BadRequestException(
+        "Image is corrupted or image type  is invalid, valid types are png, jpg, jpeg, webp",
+      );
+
+    const token = (req.headers as any).authorization;
+    const user_id = this.tokenService.getUserIdFromToken(token);
+
     const image = `https://1ac3beb4d0fa.ngrok-free.app/uploads/${file_name}`;
-    const SKIN_ANALYSIS_PROFESSIONAL_PROMPT = `
-      You are a professional cosmetic image analysis assistant. Your task is to visually analyze a face image and provide structured, non-medical observations and recommendations. 
-      You must not provide a diagnosis or medical advice — everything should be framed as cosmetic and educational only. 
-      Begin with: "This analysis is for cosmetic and educational purposes only. It is not medical advice."
+    const res = await call_openAI(image);
+    const res_final = JSON.parse(res);
 
-      ### OUTPUT STRUCTURE
+    const problems_array = res_final.problems;
+    const analysis_object = this.analysisRepository.create({
+      user: { id: user_id },
+      image_url: `uploads/${file_name}`,
+      problems: res_final.problems,
+      skin_care_routine: res_final.skin_care_routine,
+      scores: res_final.scores,
+      estimated_days_progress: res_final.estimated_days_progress,
+    });
 
-      1. **Detected Skin Concerns**
-        - Provide a clear **title** for each detected concern (e.g., "Dry Patches", "Oily Zones", "Acne Spots").
-        - Include a **one-line description** of the concern, very concise (max 1 line).
-        - Give a **severity level** as text using ONLY one of these three values:
-          - **Mild** → Low visibility, minor concern.
-          - **Moderate** → Noticeable, medium-level concern.
-          - **Severe** → Highly visible, major concern.
-        - Give a **confidence percentage** (0% - 100%) indicating how confident you are about this observation.
-
-        Format each concern like this:
-        - Title: <problem title>
-        - Description: <1-line description>
-        - Severity: <Mild | Moderate | Severe>
-        - Confidence: <0-100%>
-
-      2. **Personalized Skincare Routine**
-        - Provide **two routines**: Morning and Evening.
-        - Each routine should have 3-5 steps.
-        - For each step:
-          - **Product Name**: suggest a general cosmetic product (e.g., "Gentle Hydrating Cleanser").
-          - **How to Use**: give clear instructions in 1-2 lines.
-          - **Estimated Time**: how long the step typically takes (in minutes).
-
-        Format example:
-        - Step 1:
-          - Product Name: <product>
-          - How to Use: <instructions in 1-2 lines>
-          - Time: <minutes>
-
-      3. **Overall Scores**
-        - **General Skin Health Score**: 0-100 (%)
-        - **Acne Score**: 0-10
-        - **Texture Score**: 0-10
-        - **Hydration Score**: 0-100 (%)
-
-      ### IMPORTANT GUIDELINES
-      - Be objective and factual, never diagnose or claim a medical condition.
-      - If the image quality is too low, say: "Image quality insufficient for detailed analysis."
-      - Focus on cosmetic issues only: dryness, oiliness, acne spots, uneven tone, visible pores, general texture, etc.
-      - Output should be concise, clean, and ready to be displayed directly to the user.
-      - Always include the disclaimer at the top.
-      `;
-
-      try {
-        const response = await this.client.responses.create({
-        model: 'gpt-4o-mini',
-        input: [
-          {
-            role: 'user',
-            content: [
-              { type: 'input_text', text: SKIN_ANALYSIS_PROFESSIONAL_PROMPT },
-              { type: 'input_image', image_url: image, detail: "high" },
-            ],
-          },
-        ],
-      });
-
-      console.log(response.output_text);
-
-      return response.output_text;
-      } catch (error) {
-        console.log(error.message);
-        throw error;
-      }
+    try {
+      const analysis_save = await this.analysisRepository.save(analysis_object);
+      return {
+        message: "Analysis done successfully",
+      };
+    } catch (error) {
+      throw new InternalServerErrorException(
+        "Server Error, please try again later",
+      );
+    }
   }
 
-  findAll() {
-    return `This action returns all analysis`;
+  async findAll() {
+    const all_analysis = await this.analysisRepository.find();
+    if (!all_analysis) throw new NotFoundException("No analysis found");
+    return {
+      message: "All analysis fetched successfully",
+      payload: all_analysis,
+    };
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} analysis`;
+  async findOne(id: string) {
+    const analysis = await this.analysisRepository.findOneBy({ id });
+    if (!analysis) throw new NotFoundException("No analysis found");
+    return {
+      message: `Analysis with id ${id} fetched successfully`,
+      payload: analysis,
+    };
+  }
+
+  async findByUser(req: Request) {
+    const token = (req.headers as any).authorization;
+    const user_id = this.tokenService.getUserIdFromToken(token);
+    const user = await this.userRepository.findOneBy({ id: user_id })
+
+    if(!user) throw new NotFoundException("User not found");
+
+    const analysis = await this.analysisRepository.findOneBy({ user_id });
+    if (!analysis) throw new NotFoundException("No analysis with for this user found");
+    return {
+      message: `Analysis for user ${user.first_name} fetched successfully`,
+      payload: analysis,
+    };
   }
 }

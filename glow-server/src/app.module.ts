@@ -5,6 +5,7 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { UserModule } from './user/user.module';
 import { User } from './user/entities/user.entity'
 import { AnalysisModule } from './analysis/analysis.module';
+import { Analysis } from "./analysis/entities/analysis.entity";
 
 @Module({
   imports: [
@@ -18,7 +19,7 @@ import { AnalysisModule } from './analysis/analysis.module';
       username: process.env.DB_USER,
       password: process.env.DB_PASS,
       database: process.env.DB_NAME,
-      entities: [User],
+      entities: [User, Analysis],
       synchronize: true,
     }),
     ChatModule,
