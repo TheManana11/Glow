@@ -10,6 +10,7 @@ import { HelpersModule } from './helpers/helpers.module';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler'
 import { APP_GUARD } from "@nestjs/core";
 import { ENV_CONFIG, THROTTLE_CONFIG } from "./config";
+import { CacheModule } from '@nestjs/cache-manager'
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { ENV_CONFIG, THROTTLE_CONFIG } from "./config";
       synchronize: true,
     }),
     ThrottlerModule.forRoot(THROTTLE_CONFIG),
+    CacheModule.register({ isGlobal: true }),
     ChatModule,
     UserModule,
     AnalysisModule,

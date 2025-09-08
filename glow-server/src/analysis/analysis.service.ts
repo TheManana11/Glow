@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Inject, Injectable } from "@nestjs/common";
 import { CreateAnalysisDto } from "./dto/create-analysis.dto";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
@@ -7,6 +7,7 @@ import { TokenService } from "./token.service";
 import { User } from "src/user/entities/user.entity";
 import { HelpersService } from "src/helpers/helpers.service";
 import { ErrorService } from "src/helpers/errors.service";
+import { CACHE_MANAGER, Cache } from "@nestjs/cache-manager";
 
 @Injectable()
 export class AnalysisService {
@@ -16,6 +17,8 @@ export class AnalysisService {
 
     @InjectRepository(User)
     private userRepository: Repository<User>,
+
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
 
     private tokenService: TokenService,
     private helperService: HelpersService,
@@ -51,6 +54,7 @@ export class AnalysisService {
 
     try {
       const analysis_save = await this.analysisRepository.save(analysis_object);
+      await this.cacheManager.clear();
       return {
         message: "Analysis done successfully",
       };
@@ -78,11 +82,23 @@ export class AnalysisService {
 
     this.errorService.NotFound("User not found", !user);
 
+    const cache_analysis = await this.cacheManager.get(`all-user-analysis:${user_id}`);
+    if (cache_analysis) {
+      console.log('Cache HIT!!!');
+      
+      return {
+        message: `All Analysis for user ${user?.first_name} fetched successfully`,
+        payload: cache_analysis,
+      };
+    }
+
+    console.log('Cache MISS!!!');
     const analysis = await this.analysisRepository.find({
       where: { user_id },
       order: { created_at: "DESC" },
     });
-    this.errorService.NotFound("No analysis found", !analysis);
+    this.errorService.NotFound("No analysis found", !analysis || analysis.length === 0);
+    await this.cacheManager.set(`all-user-analysis:${user_id}`, analysis, 0);
 
     return {
       message: `All Analysis for user ${user?.first_name} fetched successfully`,
