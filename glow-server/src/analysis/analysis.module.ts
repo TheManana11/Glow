@@ -8,10 +8,12 @@ import { User } from 'src/user/entities/user.entity';
 import { HelpersModule } from 'src/helpers/helpers.module';
 import { HelpersService } from 'src/helpers/helpers.service';
 import { ErrorService } from 'src/helpers/errors.service';
+import { ScheduleModule } from '@nestjs/schedule';
+import { SchedulerService } from 'src/scheduler/scheduler.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Analysis, User]), HelpersModule],
+  imports: [TypeOrmModule.forFeature([Analysis, User]), HelpersModule, ScheduleModule],
   controllers: [AnalysisController],
-  providers: [AnalysisService, TokenService, HelpersService, ErrorService],
+  providers: [AnalysisService, TokenService, HelpersService, ErrorService, SchedulerService],
 })
 export class AnalysisModule {}

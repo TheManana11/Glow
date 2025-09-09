@@ -4,7 +4,8 @@ import {
   IsNotEmpty, 
   IsNumber, 
   IsString, 
-  MinLength 
+  MinLength, 
+  Matches 
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { SkinType, PrimarySkinConcern, role } from '../entities/user.entity';
@@ -12,6 +13,7 @@ import { SkinType, PrimarySkinConcern, role } from '../entities/user.entity';
 export class CreateUserDto {
   @ApiProperty({
     example: "Ahmad",
+    description: "First name of the user",
   })
   @IsString()
   @IsNotEmpty()
@@ -19,6 +21,7 @@ export class CreateUserDto {
 
   @ApiProperty({
     example: "Manana",
+    description: "Last name of the user",
   })
   @IsString()
   @IsNotEmpty()
@@ -26,6 +29,7 @@ export class CreateUserDto {
 
   @ApiProperty({
     example: "ahmad@example.com",
+    description: "Unique email of the user",
   })
   @IsEmail()
   @IsNotEmpty()
@@ -34,6 +38,7 @@ export class CreateUserDto {
   @ApiProperty({
     example: "strongPass123",
     minLength: 6,
+    description: "Password with minimum length of 6 characters",
   })
   @IsString()
   @MinLength(6)
@@ -41,6 +46,7 @@ export class CreateUserDto {
 
   @ApiProperty({
     example: 25,
+    description: "Age of the user",
   })
   @IsNumber()
   age: number;
@@ -48,6 +54,7 @@ export class CreateUserDto {
   @ApiProperty({
     enum: SkinType,
     example: SkinType.OILY,
+    description: "Skin type of the user",
   })
   @IsEnum(SkinType)
   skin_type: SkinType;
@@ -55,6 +62,7 @@ export class CreateUserDto {
   @ApiProperty({
     enum: PrimarySkinConcern,
     example: PrimarySkinConcern.ACNE,
+    description: "Primary skin concern of the user",
   })
   @IsEnum(PrimarySkinConcern)
   primary_skin_concern: PrimarySkinConcern;
@@ -62,7 +70,19 @@ export class CreateUserDto {
   @ApiProperty({
     enum: role,
     example: role.DOCTOR,
+    description: "Role of the user, either PATIENT or DOCTOR",
   })
   @IsEnum(role)
   role: role;
+
+  @ApiProperty({
+    example: "+96171236842",
+    description: "Phone number of the user in international format",
+  })
+  @IsString()
+  @IsNotEmpty()
+  @Matches(/^\+?[0-9]{8,15}$/, {
+    message: "Phone number must be a valid international number",
+  })
+  phone_number: string;
 }

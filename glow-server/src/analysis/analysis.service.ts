@@ -8,6 +8,7 @@ import { User } from "src/user/entities/user.entity";
 import { HelpersService } from "src/helpers/helpers.service";
 import { ErrorService } from "src/helpers/errors.service";
 import { CACHE_MANAGER, Cache } from "@nestjs/cache-manager";
+import { SchedulerService } from "src/scheduler/scheduler.service";
 
 @Injectable()
 export class AnalysisService {
@@ -23,6 +24,7 @@ export class AnalysisService {
     private tokenService: TokenService,
     private helperService: HelpersService,
     private errorService: ErrorService,
+    private schedulerService: SchedulerService
   ) {}
 
   async create(req: Request, createAnalysisDto: CreateAnalysisDto) {
@@ -38,7 +40,7 @@ export class AnalysisService {
     const token = (req.headers as any).authorization;
     const user_id = this.tokenService.getUserIdFromToken(token);
 
-    const image = `https://e1035c3895e9.ngrok-free.app/uploads/analysis/${file_name}`;
+    const image = `https://97c5d45631fa.ngrok-free.app/uploads/analysis/${file_name}`;
     const res = await this.helperService.call_openAI(image);
     const res_final = JSON.parse(res);
 
@@ -55,6 +57,7 @@ export class AnalysisService {
     try {
       const analysis_save = await this.analysisRepository.save(analysis_object);
       await this.cacheManager.clear();
+      this.schedulerService.resumeDailyReminders();
       return {
         message: "Analysis done successfully",
       };

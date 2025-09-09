@@ -307,6 +307,4 @@ export class HelpersService {
         },
       );
     }
-    
-    
 }

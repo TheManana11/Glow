@@ -13,6 +13,8 @@ import { ENV_CONFIG, THROTTLE_CONFIG } from "./config";
 import { CacheModule } from '@nestjs/cache-manager'
 import { DoctorModule } from './doctor/doctor.module';
 import { Doctor } from "./doctor/entities/doctor.entity";
+import { ScheduleModule } from '@nestjs/schedule'
+import { SchedulerModule } from './scheduler/scheduler.module';
 
 @Module({
   imports: [
@@ -29,11 +31,13 @@ import { Doctor } from "./doctor/entities/doctor.entity";
     }),
     ThrottlerModule.forRoot(THROTTLE_CONFIG),
     CacheModule.register({ isGlobal: true }),
+    ScheduleModule.forRoot(),
     ChatModule,
     UserModule,
     AnalysisModule,
     HelpersModule,
     DoctorModule,
+    SchedulerModule,
   ],
   providers: [ { provide: APP_GUARD, useClass: ThrottlerGuard } ],
 })
