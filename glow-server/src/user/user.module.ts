@@ -14,7 +14,7 @@ import { ErrorService } from "src/helpers/errors.service";
     JwtModule.register({
       global: true,
       secret: "mysecret",
-      signOptions: { expiresIn: "1h" },
+      signOptions: { expiresIn: "7d" },
     }),
     HelpersModule
   ],

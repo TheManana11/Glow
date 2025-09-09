@@ -38,7 +38,7 @@ export class UserService {
     });
     const user = await this.userRepository.save(new_user);
 
-    const token = await this.jwtService.signAsync({ id: user.id });
+    const token = await this.jwtService.signAsync({ id: user.id, first_name: user.first_name, role: user.role });
     const { password, ...rest } = user;
     return {
       message: "User created successfully",
@@ -58,7 +58,7 @@ export class UserService {
       user?.password,
     );
     this.errorService.Unauthorized("Incorrect Password", !match);
-    const token = await this.jwtService.signAsync({ id: user?.id });
+    const token = await this.jwtService.signAsync({ id: user?.id, first_name: user?.first_name, role: user?.role });
     return {
       message: "User logged in successfully",
       payload: user,

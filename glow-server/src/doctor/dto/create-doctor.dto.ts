@@ -1,4 +1,3 @@
-// src/doctor/dto/create-doctor.dto.ts
 import {
   IsBoolean,
   IsEnum,
