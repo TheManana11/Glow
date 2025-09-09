@@ -7,7 +7,7 @@ import {
   MinLength 
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { SkinType, PrimarySkinConcern } from '../entities/user.entity';
+import { SkinType, PrimarySkinConcern, role } from '../entities/user.entity';
 
 export class CreateUserDto {
   @ApiProperty({
@@ -58,4 +58,11 @@ export class CreateUserDto {
   })
   @IsEnum(PrimarySkinConcern)
   primary_skin_concern: PrimarySkinConcern;
+
+  @ApiProperty({
+    enum: role,
+    example: role.DOCTOR,
+  })
+  @IsEnum(role)
+  role: role;
 }

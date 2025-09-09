@@ -11,8 +11,6 @@ import {
 } from "typeorm";
 import { User } from "../../user/entities/user.entity";
 import {
-  IsUUID,
-  IsUrl,
   IsOptional,
   IsInt,
   Min,

@@ -11,6 +11,8 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler'
 import { APP_GUARD } from "@nestjs/core";
 import { ENV_CONFIG, THROTTLE_CONFIG } from "./config";
 import { CacheModule } from '@nestjs/cache-manager'
+import { DoctorModule } from './doctor/doctor.module';
+import { Doctor } from "./doctor/entities/doctor.entity";
 
 @Module({
   imports: [
@@ -22,7 +24,7 @@ import { CacheModule } from '@nestjs/cache-manager'
       username: process.env.DB_USER,
       password: process.env.DB_PASS,
       database: process.env.DB_NAME,
-      entities: [User, Analysis],
+      entities: [User, Analysis, Doctor],
       synchronize: true,
     }),
     ThrottlerModule.forRoot(THROTTLE_CONFIG),
@@ -31,6 +33,7 @@ import { CacheModule } from '@nestjs/cache-manager'
     UserModule,
     AnalysisModule,
     HelpersModule,
+    DoctorModule,
   ],
   providers: [ { provide: APP_GUARD, useClass: ThrottlerGuard } ],
 })

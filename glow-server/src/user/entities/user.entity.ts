@@ -1,5 +1,6 @@
 import { Analysis } from "src/analysis/entities/analysis.entity";
-import { Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToMany } from "typeorm";
+import { Doctor } from "src/doctor/entities/doctor.entity";
+import { Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToMany, OneToOne } from "typeorm";
 
 export enum SkinType {
   OILY = 'oily',
@@ -72,4 +73,7 @@ export class User {
 
   @OneToMany(() => Analysis, (analysis) => analysis.user, {})
   analyses: Analysis[];
+
+  @OneToOne(() => Doctor, (doctor) => doctor.user)
+  doctor: Doctor;
 }
