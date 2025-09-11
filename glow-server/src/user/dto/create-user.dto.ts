@@ -5,7 +5,8 @@ import {
   IsNumber, 
   IsString, 
   MinLength, 
-  Matches 
+  Matches, 
+  IsPhoneNumber
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { role } from '../entities/user.entity';
@@ -49,6 +50,7 @@ export class CreateUserDto {
     description: "Age of the user",
   })
   @IsNumber()
+  @IsNotEmpty()
   age: number;
 
   @ApiProperty({
@@ -65,8 +67,9 @@ export class CreateUserDto {
   })
   @IsString()
   @IsNotEmpty()
-  @Matches(/^\+?[0-9]{8,15}$/, {
-    message: "Phone number must be a valid international number",
-  })
+  @IsPhoneNumber()
+  // @Matches(/^\+?[0-9]{8,15}$/, {
+  //   message: "Phone number must be a valid international number",
+  // })
   phone_number: string;
 }
