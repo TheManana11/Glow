@@ -10,6 +10,8 @@ import {
 import styles from "./style";
 import { Feather } from "@expo/vector-icons";
 import axios from "axios"; 
+import * as SecureStore from 'expo-secure-store';
+import { useNavigation } from "@react-navigation/native";
 
 export default function SignupScreen({ navigation }) {
   const [formData, setFormData] = useState({
@@ -19,20 +21,20 @@ export default function SignupScreen({ navigation }) {
 
   const handleSubmit = async () => {
     try {
-    const response = await axios.post('http://192.168.10.101:3000/users/login', formData,{
+    const response = await axios.post('http://192.168.10.103:3000/users/login', formData,{
       headers: { 'Content-Type': 'application/json',
-       }, 
+       },
+       timeout: 10000, 
     });
 
-    console.log('====================================');
-    console.log("Request sending ... ");
-    console.log( "Response Message: ", response.data);
-    console.log('====================================');
+    const token = response.data.token;
+    await SecureStore.setItemAsync('token', token);
 
     setFormData({
       email: "",
       password: ""
     });
+    navigation.navigate('Home')
     } catch (error) {
       console.log('====================================');
       console.log("Error Message: ", error.response.data.message);

@@ -10,6 +10,7 @@ import {
 import styles from "./style";
 import { Feather } from "@expo/vector-icons";
 import axios from "axios";
+import * as SecureStore from 'expo-secure-store';
 
 export default function SignupScreen({ navigation }) {
   const [formData, setFormData] = useState({
@@ -24,16 +25,20 @@ export default function SignupScreen({ navigation }) {
 
   const handleSubmit = async () => {
     try {
-    const response = await axios.post('http://192.168.10.101:3000/users/register', formData,{
+    const response = await axios.post('http://192.168.10.103:3000/users/register', formData,{
       headers: { 'Content-Type': 'application/json',
        }, 
     });
 
-    console.log('====================================');
-    console.log("Request sending ... ");
-    console.log( "Response Message: ", response.data.message);
-    console.log( "Response Payload: ", response.data.payload);
-    console.log('====================================');
+    const token = response.data.token;
+    await SecureStore.setItemAsync('token', token);
+
+
+    // console.log('====================================');
+    // console.log("Request sending ... ");
+    // console.log( "Response Message: ", response.data.message);
+    // console.log( "Response Payload: ", response.data.payload);
+    // console.log('====================================');
 
     setFormData({
       first_name: "",

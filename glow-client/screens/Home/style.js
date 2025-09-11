@@ -82,6 +82,10 @@ export default StyleSheet.create({
     height: '100%',
     backgroundColor: '#D89250',
   },
+  rowScore: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
   progressDetails: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -100,20 +104,24 @@ export default StyleSheet.create({
   },
   analysisSection: {
     backgroundColor: '#fff',
-    padding: 12,
+    padding: 20,
     borderRadius: 8,
     marginBottom: 20,
     borderColor: '#eee',
     borderWidth: 1,
   },
+  titleIcon: {
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
   sectionTitle: {
     fontWeight: 'bold',
     fontSize: 20,
     color: '#D89250',
-    marginBottom: 10,
+    marginBottom: 25,
   },
   analysisItem: {
-    marginBottom: 12,
+    marginBottom: 20,
   },
   analysisTitle: {
     fontWeight: 'bold',

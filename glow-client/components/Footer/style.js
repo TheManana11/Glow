@@ -13,7 +13,6 @@ export default StyleSheet.create({
     bottom: 0,
     width: '100%',
     height: 70,
-    marginBottom: 10
   },
   footerText: {
     fontSize: 12,
