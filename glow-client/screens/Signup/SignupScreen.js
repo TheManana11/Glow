@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import styles from "./style";
 import { Feather } from "@expo/vector-icons";
+import axios from "axios";
 
 export default function SignupScreen({ navigation }) {
   const [formData, setFormData] = useState({
@@ -21,8 +22,19 @@ export default function SignupScreen({ navigation }) {
     role: "",
   });
 
-  const handleSubmit = () => {
-    console.log(formData);
+  const handleSubmit = async () => {
+    try {
+    const response = await axios.post('http://192.168.10.101:3000/users/register', formData,{
+      headers: { 'Content-Type': 'application/json',
+       }, 
+    });
+
+    console.log('====================================');
+    console.log("Request sending ... ");
+    console.log( "Response Message: ", response.data.message);
+    console.log( "Response Payload: ", response.data.payload);
+    console.log('====================================');
+
     setFormData({
       first_name: "",
       last_name: "",
@@ -32,7 +44,12 @@ export default function SignupScreen({ navigation }) {
       password: "",
       role: "",
     });
-  };
+    } catch (error) {
+      console.log('====================================');
+      console.log("Error Message: ", error.response.data.message);
+      console.log('====================================');
+    }
+  }
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
