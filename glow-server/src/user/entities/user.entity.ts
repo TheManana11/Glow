@@ -10,25 +10,9 @@ import {
   OneToOne 
 } from "typeorm";
 
-export enum SkinType {
-  OILY = 'oily',
-  DRY = 'dry',
-  COMBINATION = 'combination',
-  NORMAL = 'normal',
-  SENSITIVE = 'sensitive',
-}
-
 export enum role {
   PATIENT = 'patient',
   DOCTOR = 'doctor',
-}
-
-export enum PrimarySkinConcern {
-  ACNE = 'acne',
-  WRINKLES = 'wrinkles',
-  DARK_SPOTS = 'dark_spots',
-  REDNESS = 'redness',
-  OTHER = 'other',
 }
 
 @Entity('users') 
@@ -50,18 +34,6 @@ export class User {
 
   @Column({ type: 'int' })
   age: number;
-
-  @Column({
-    type: 'enum',
-    enum: SkinType,
-  })
-  skin_type: SkinType;
-
-  @Column({
-    type: 'enum',
-    enum: PrimarySkinConcern,
-  })
-  primary_skin_concern: PrimarySkinConcern;
 
   @Column({ nullable: true })
   image_url: string;

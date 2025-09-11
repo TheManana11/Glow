@@ -8,7 +8,7 @@ import {
   Matches 
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { SkinType, PrimarySkinConcern, role } from '../entities/user.entity';
+import { role } from '../entities/user.entity';
 
 export class CreateUserDto {
   @ApiProperty({
@@ -50,22 +50,6 @@ export class CreateUserDto {
   })
   @IsNumber()
   age: number;
-
-  @ApiProperty({
-    enum: SkinType,
-    example: SkinType.OILY,
-    description: "Skin type of the user",
-  })
-  @IsEnum(SkinType)
-  skin_type: SkinType;
-
-  @ApiProperty({
-    enum: PrimarySkinConcern,
-    example: PrimarySkinConcern.ACNE,
-    description: "Primary skin concern of the user",
-  })
-  @IsEnum(PrimarySkinConcern)
-  primary_skin_concern: PrimarySkinConcern;
 
   @ApiProperty({
     enum: role,

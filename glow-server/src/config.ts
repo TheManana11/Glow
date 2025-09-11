@@ -4,10 +4,10 @@ import { User } from "./user/entities/user.entity";
 import { Analysis } from "./analysis/entities/analysis.entity";
 
 export const CORS_CONFIG = {
-  origin: ["http://localhost:3000"],
+  origin: ['*'],
   methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
-  credentials: true,
+  credentials: false,
 };
 
 export const VALIDATOR_CONFIG = new ValidationPipe({
