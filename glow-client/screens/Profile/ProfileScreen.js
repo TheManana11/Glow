@@ -24,42 +24,51 @@ const ProfileScreen = () => {
 
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Personal Information</Text>
+
           <View style={styles.row}>
-            <Feather name="user" size={16} color="#D89250" />
-            <Text style={styles.label}>First name</Text>
-          </View>
+            <Feather name="user" size={20} color="#D89250" />
+            <View style={styles.column}>
+          <Text style={styles.label}>First name</Text>
           <Text style={styles.value}>Jhon</Text>
+            </View>
+          </View>
 
           <View style={styles.row}>
-            <Feather name="user" size={16} color="#D89250" />
+            <Feather name="user" size={20} color="#D89250" />
+            <View style={styles.column}>
             <Text style={styles.label}>Last name</Text>
-          </View>
           <Text style={styles.value}>Dee</Text>
+          </View>
+          </View>
 
           <View style={styles.row}>
-            <MaterialIcons name="email" size={16} color="#D89250" />
+            <Feather name="mail" size={20} color="#D89250" />
+            <View style={styles.column}>
             <Text style={styles.label}>Email</Text>
-          </View>
           <Text style={styles.value}>jhon.dee@example.com</Text>
+            </View>
+          </View>
 
           <View style={styles.row}>
-            <Feather name="calendar" size={16} color="#D89250" />
+            <Feather name="calendar" size={20} color="#D89250" />
+            <View style={styles.column}>
             <Text style={styles.label}>Age</Text>
-          </View>
           <Text style={styles.value}>24 years old</Text>
+          </View>
+          </View>
         </View>
 
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Account Settings</Text>
 
           <View style={styles.row}>
-            <Feather name="lock" size={16} color="#D89250" />
+            <Feather name="lock" size={20} color="#D89250" />
             <Text style={styles.value}>Change Password</Text>
           </View>
         </View>
 
         <TouchableOpacity style={styles.signOutButton}>
-          <Feather name="log-out" size={16} color="#EB4D4D" />
+          <Feather name="log-out" size={20} color="#EB4D4D" />
           <Text style={styles.signOutText}>Sign Out</Text>
         </TouchableOpacity>
       </ScrollView>

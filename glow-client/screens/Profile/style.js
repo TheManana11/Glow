@@ -29,12 +29,12 @@ export default StyleSheet.create({
     marginBottom: 2,
   },
   email: {
-    fontSize: 12,
+    fontSize: 14,
     color: '#999',
     marginBottom: 8,
   },
   changePhoto: {
-    fontSize: 12,
+    fontSize: 14,
     color: '#D89250',
   },
   editIcon: {
@@ -54,25 +54,30 @@ export default StyleSheet.create({
   },
   sectionTitle: {
     fontWeight: 'bold',
-    fontSize: 14,
+    fontSize: 20,
     color: '#D89250',
     marginBottom: 12,
   },
   row: {
     flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 2,
-    gap: 6,
+    alignItems: 'start',
+    marginBottom: 8,
+    gap: 10,
+  },
+  column: {
+    flexDirection: 'row'
   },
   label: {
-    fontSize: 12,
+    fontSize: 13,
     color: '#888',
+    textAlign: 'left'
   },
   value: {
-    fontSize: 13,
+    fontSize: 14,
     color: '#000',
     marginBottom: 10,
     marginLeft: 22,
+    textAlign: 'left'
   },
   signOutButton: {
     flexDirection: 'row',
