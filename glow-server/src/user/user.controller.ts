@@ -28,8 +28,8 @@ export class UserController {
   // register
   @Post("register")
   @HttpCode(201)
-  async create(@Body() createUserDto: CreateUserDto, @Res() res: Response) {
-    return await this.userService.create(createUserDto, res);
+  async create(@Body() createUserDto: CreateUserDto) {
+    return await this.userService.create(createUserDto);
   }
 
   // login
