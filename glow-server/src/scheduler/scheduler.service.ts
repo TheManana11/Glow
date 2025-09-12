@@ -1,4 +1,3 @@
-// scheduler.service.ts
 import { Injectable } from '@nestjs/common';
 import { Cron, SchedulerRegistry } from '@nestjs/schedule';
 import { HelpersService } from '../helpers/helpers.service';
@@ -10,14 +9,14 @@ export class SchedulerService {
     private readonly registry: SchedulerRegistry,
   ) {}
 
-  @Cron('15 18 * * *', { timeZone: 'Asia/Beirut', name: 'morningJob', disabled: true })
+  @Cron('0 8 * * *', { timeZone: 'Asia/Beirut', name: 'morningJob', disabled: true })
   async morning() {
     console.log("test");
     
     await this.helpers.webhookMessage('+96171236842', "🌞 Good morning! Remember to start your day with your skincare routine for fresh, healthy skin. 💧 Consistency is key to healthy, glowing skin — your future self will thank you! ✨"); 
   }
 
-  @Cron('30 18 * * *', { timeZone: 'Asia/Beirut', name: 'eveningJob', disabled: true })
+  @Cron('0 20 * * *', { timeZone: 'Asia/Beirut', name: 'eveningJob', disabled: true })
   async evening() {
     console.log("test");
     await this.helpers.webhookMessage('+96171236842', '🌙 Good evening! Take a few minutes to pamper your skin before bedtime. Your skin will thank you.');
