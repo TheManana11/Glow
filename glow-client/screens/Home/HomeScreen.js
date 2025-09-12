@@ -11,14 +11,16 @@ import SingleAnalysis from '../../components/Analysis/SingleAnalysis.js'
 const HomeScreen = () => {
 
   const [analysis, setAnalysis] = useState([]);
+  const [user, setUser] = useState({});
   const [token, setToken] = useState('');
   const [score, setScore] = useState('');
   const navigation = useNavigation();
 
 
-  useEffect(() => {
-    const fetchData = async () => {
+  const fetchData = async () => {
       const token = await SecureStore.getItemAsync('token');
+      const myUser = await SecureStore.getItemAsync('user');
+      setUser(JSON.parse(myUser));
       try {
         const response = await axios.get('http://192.168.10.103:3000/analysis/all-user-analysis', {
           headers: { 'Content-type': 'application/json', 'Authorization': `Bearer ${token}` }
@@ -27,16 +29,25 @@ const HomeScreen = () => {
         setScore(response.data.payload[0].scores.general_skin_health_score);
         setToken(token);
       } catch (err) {
-        console.error("error: ", response.error.data.message);
+        console.error("error: ", err.response.data.message);
       }
     };
 
+  useEffect(() => {
     fetchData();
   }, []); 
 
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.content}>
+        <View style={styles.header}>
+          <Image
+          source={{ uri: `http://192.168.10.103:3000/${user.image_url}` }}
+          style={styles.avatar}
+          resizeMode="cover"
+        />
+        <Text style={styles.headerName}>{user.first_name}</Text>
+        </View>
         <Text style={styles.headerText}>AI Powered{"\n"}<Text style={styles.bold}>Skin Analysis</Text></Text>
         <Text style={styles.subText}>
           Get personalized skincare recommendations with cutting-edge AI. Start with your first face or hydration analysis and track your skin health journey.

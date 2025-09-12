@@ -5,6 +5,26 @@ export default StyleSheet.create({
     flex: 1,
     backgroundColor: '#FFFFFF',
   },
+  header:{
+    width: '100%',
+    height: 70,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 20,
+    borderBottomColor: '#808080',
+    borderBottomWidth: 0.4,
+    marginBottom: 25
+  },
+  headerName:{
+    fontSize: 20,
+    color: '#000',
+
+  },
+  avatar:{
+    width: 50,
+    height: 50,
+    borderRadius: '50%',
+  },
   content: {
     padding: 16,
     paddingBottom: 100,
