@@ -54,7 +54,7 @@ const Footer = () => {
         <Text style={styles.footerText}>Doctors</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.column}>
+      <TouchableOpacity onPress={() => { navigation.navigate('Progress') }} style={styles.column}>
         <Feather name="trending-up" size={24} color="black" />
         <Text style={styles.footerText}>Progress</Text>
       </TouchableOpacity>

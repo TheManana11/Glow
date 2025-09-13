@@ -7,6 +7,8 @@ import SignupScreen from "./screens/Signup/SignupScreen";
 import ProfileScreen from "./screens/Profile/ProfileScreen";
 import DoctorProfileScreen from './screens/DoctorProfile/DoctorProfileScreen';
 import DoctorsScreen from './screens/Doctors/DoctorsScreen';
+import MainScreen from './screens/Progress/MainScreen'
+
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -20,6 +22,7 @@ export default function App() {
           <Stack.Screen name='Profile' component={ProfileScreen} />
           <Stack.Screen name="DoctorProfile" component={DoctorProfileScreen} />
           <Stack.Screen name="Doctors" component={DoctorsScreen} />
+          <Stack.Screen name="Progress" component={MainScreen} />
         </Stack.Navigator>
       </NavigationContainer>
   );
