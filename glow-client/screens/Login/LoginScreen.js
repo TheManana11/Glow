@@ -21,7 +21,7 @@ export default function SignupScreen({ navigation }) {
 
   const handleSubmit = async () => {
     try {
-    const response = await axios.post('http://192.168.10.103:3000/users/login', formData,{
+    const response = await axios.post('http://192.168.10.105:3000/users/login', formData,{
       headers: { 'Content-Type': 'application/json',
        },
        timeout: 10000, 
