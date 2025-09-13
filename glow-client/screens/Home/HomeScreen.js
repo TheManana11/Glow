@@ -22,7 +22,7 @@ const HomeScreen = () => {
       const myUser = await SecureStore.getItemAsync('user');
       setUser(JSON.parse(myUser));
       try {
-        const response = await axios.get('http://192.168.10.103:3000/analysis/all-user-analysis', {
+        const response = await axios.get('http://192.168.10.105:3000/analysis/all-user-analysis', {
           headers: { 'Content-type': 'application/json', 'Authorization': `Bearer ${token}` }
         });
         setAnalysis(response.data.payload);
@@ -42,7 +42,7 @@ const HomeScreen = () => {
       <ScrollView contentContainerStyle={styles.content}>
         <View style={styles.header}>
           <Image
-          source={{ uri: `http://192.168.10.103:3000/${user.image_url}` }}
+          source={{ uri: `http://192.168.10.105:3000/${user.image_url}` }}
           style={styles.avatar}
           resizeMode="cover"
         />

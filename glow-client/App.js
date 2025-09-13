@@ -5,19 +5,23 @@ import LoginScreen from './screens/Login/LoginScreen'
 import HomeScreen from "./screens/Home/HomeScreen";
 import SignupScreen from "./screens/Signup/SignupScreen";
 import ProfileScreen from "./screens/Profile/ProfileScreen";
+import DoctorProfileScreen from './screens/DoctorProfile/DoctorProfileScreen';
+import DoctorsScreen from './screens/Doctors/DoctorsScreen';
 
 export default function App() {
   const Stack = createNativeStackNavigator();
 
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName='Login'>
-        <Stack.Screen name='Home' component={HomeScreen} />
-        <Stack.Screen name='Login' component={LoginScreen} />
-        <Stack.Screen name='Signup' component={SignupScreen} />
-        <Stack.Screen name='Profile' component={ProfileScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName='Login' screenOptions={{ headerShown: false }}>
+          <Stack.Screen name='Home' component={HomeScreen} />
+          <Stack.Screen name='Login' component={LoginScreen} />
+          <Stack.Screen name='Signup' component={SignupScreen} />
+          <Stack.Screen name='Profile' component={ProfileScreen} />
+          <Stack.Screen name="DoctorProfile" component={DoctorProfileScreen} />
+          <Stack.Screen name="Doctors" component={DoctorsScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
   );
 }
 
