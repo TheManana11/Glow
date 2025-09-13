@@ -44,7 +44,7 @@ const Footer = () => {
         <Text style={styles.footerText}>Home</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.column}>
+      <TouchableOpacity onPress={() => navigation.navigate('AnalysisMain')} style={styles.column}>
         <Feather name="bar-chart" size={24} color="black" />
         <Text style={styles.footerText}>Analysis</Text>
       </TouchableOpacity>

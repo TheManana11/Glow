@@ -8,6 +8,7 @@ import ProfileScreen from "./screens/Profile/ProfileScreen";
 import DoctorProfileScreen from './screens/DoctorProfile/DoctorProfileScreen';
 import DoctorsScreen from './screens/Doctors/DoctorsScreen';
 import MainScreen from './screens/Progress/MainScreen'
+import AnalysisMain from './screens/AnalysisMain/AnalysisMain'
 
 
 export default function App() {
@@ -23,6 +24,7 @@ export default function App() {
           <Stack.Screen name="DoctorProfile" component={DoctorProfileScreen} />
           <Stack.Screen name="Doctors" component={DoctorsScreen} />
           <Stack.Screen name="Progress" component={MainScreen} />
+          <Stack.Screen name="AnalysisMain" component={AnalysisMain} />
         </Stack.Navigator>
       </NavigationContainer>
   );
