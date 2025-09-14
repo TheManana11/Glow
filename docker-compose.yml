@@ -22,7 +22,7 @@ services:
       - /usr/src/app/node_modules
 
   db:
-    image: postgres:17
+    image: pgvector/pgvector:pg17
     container_name: glow-db
     restart: always
     environment:
