@@ -7,7 +7,7 @@ export default StyleSheet.create({
     backgroundColor: '#F9F9F9',
     padding: 20,
     paddingTop: 30,
-    marginTop: 50,
+      marginTop: 50,
   },
 
   /** Header **/
@@ -80,6 +80,6 @@ export default StyleSheet.create({
 
   subRouteContainer: {
     flex: 1,
-    marginTop: 25,
+    marginVertical: 25,
   },
 });

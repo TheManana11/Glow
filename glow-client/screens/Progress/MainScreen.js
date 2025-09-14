@@ -17,6 +17,7 @@ const MainScreen = () => {
   };
 
   return (
+    <>
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>Your Skin Health Journey</Text>
@@ -64,8 +65,9 @@ const MainScreen = () => {
       </View>
 
       <ScrollView style={styles.contentContainer}>{renderContent()}</ScrollView>
-      <Footer />
     </View>
+    <Footer />
+    </>
   );
 };
 

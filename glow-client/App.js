@@ -10,7 +10,6 @@ import DoctorsScreen from './screens/Doctors/DoctorsScreen';
 import MainScreen from './screens/Progress/MainScreen'
 import AnalysisMain from './screens/AnalysisMain/AnalysisMain'
 
-
 export default function App() {
   const Stack = createNativeStackNavigator();
 

@@ -4,6 +4,7 @@ import AnalysisScreen from '../Analysis/AnalysisScreen';
 import ProblemsScreen from '../Problems/ProblemsScreen';
 import RoutineScreen from '../Routine/RoutineScreen';
 import styles from './style';
+import Footer from '../../components/Footer/Footer';
 
 const AnalysisMain = () => {
   const [activeTab, setActiveTab] = useState("Analysis"); // Default to Analysis screen
@@ -11,11 +12,12 @@ const AnalysisMain = () => {
   // Dynamically render the selected screen
   const renderContent = () => {
     if (activeTab === "Analysis") return <AnalysisScreen />;
-    if (activeTab === "Problems") return <ProblemsScreen />;
+    if (activeTab === "Problems") return <ProblemsScreen setActiveTab={setActiveTab} />;
     return <RoutineScreen />;
   };
 
   return (
+    <>
     <View style={styles.container}>
       {/* HEADER */}
       <Text style={styles.title}>AI Skin Analysis</Text>
@@ -86,6 +88,8 @@ const AnalysisMain = () => {
         {renderContent()}
       </ScrollView>
     </View>
+      <Footer />
+      </>
   );
 };
 
