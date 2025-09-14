@@ -10,6 +10,7 @@ import { ErrorService } from "src/helpers/errors.service";
 import { CACHE_MANAGER, Cache } from "@nestjs/cache-manager";
 import { SchedulerService } from "src/scheduler/scheduler.service";
 import { VectorService } from "src/vector/vector.service";
+import { UserService } from "src/user/user.service";
 
 @Injectable()
 export class AnalysisService {
@@ -26,6 +27,7 @@ export class AnalysisService {
     private helperService: HelpersService,
     private errorService: ErrorService,
     private schedulerService: SchedulerService,
+    private userService: UserService,
     private vectorService: VectorService
   ) {}
 
@@ -42,7 +44,7 @@ export class AnalysisService {
     const token = (req.headers as any).authorization;
     const user_id = this.tokenService.getUserIdFromToken(token);
 
-    const image = `https://a407b6545fba.ngrok-free.app/uploads/analysis/${file_name}`;
+    const image = `https://b50602d7ccc2.ngrok-free.app/uploads/analysis/${file_name}`;
     const res = await this.helperService.call_openAI(image);
     const res_final = JSON.parse(res);
 
@@ -59,7 +61,22 @@ export class AnalysisService {
     try {
       const analysis_save = await this.analysisRepository.save(analysis_object);
       await this.cacheManager.clear();
-      this.schedulerService.resumeDailyReminders();
+
+
+      try {
+      const user = await this.userService.findOne(user_id);
+      this.schedulerService.resumeDailyReminders(user.payload?.phone_number);
+    } catch (error) {
+      console.log('====================================');
+      console.log(error);
+      console.log('====================================');
+    }
+      
+
+
+
+
+      
       this.vectorService.saveAnalysisChunks(analysis_save);
       return {
         message: "Analysis done successfully",
