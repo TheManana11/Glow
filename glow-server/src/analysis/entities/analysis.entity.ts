@@ -8,6 +8,7 @@ import {
   Index,
   Check,
   UpdateDateColumn,
+  OneToMany,
 } from "typeorm";
 import { User } from "../../user/entities/user.entity";
 import {
@@ -17,6 +18,7 @@ import {
   IsObject,
   IsNotEmptyObject,
 } from "class-validator";
+import { AnalysisChunk } from "src/vector/entities/vector.entity";
 
 @Entity("analysis")
 @Index(["user"])
@@ -66,4 +68,7 @@ export class Analysis {
   @ManyToOne(() => User, (user) => user.analyses, { onDelete: "CASCADE" })
   @JoinColumn({ name: "user_id" })
   user: User;
+
+  @OneToMany(() => AnalysisChunk, (chunk) => chunk.analysis)
+  chunks: AnalysisChunk[];
 }

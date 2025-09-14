@@ -9,6 +9,7 @@ import { HelpersService } from "src/helpers/helpers.service";
 import { ErrorService } from "src/helpers/errors.service";
 import { CACHE_MANAGER, Cache } from "@nestjs/cache-manager";
 import { SchedulerService } from "src/scheduler/scheduler.service";
+import { VectorService } from "src/vector/vector.service";
 
 @Injectable()
 export class AnalysisService {
@@ -24,7 +25,8 @@ export class AnalysisService {
     private tokenService: TokenService,
     private helperService: HelpersService,
     private errorService: ErrorService,
-    private schedulerService: SchedulerService
+    private schedulerService: SchedulerService,
+    private vectorService: VectorService
   ) {}
 
   async create(req: Request, createAnalysisDto: CreateAnalysisDto) {
@@ -40,7 +42,7 @@ export class AnalysisService {
     const token = (req.headers as any).authorization;
     const user_id = this.tokenService.getUserIdFromToken(token);
 
-    const image = `https://97c5d45631fa.ngrok-free.app/uploads/analysis/${file_name}`;
+    const image = `https://a407b6545fba.ngrok-free.app/uploads/analysis/${file_name}`;
     const res = await this.helperService.call_openAI(image);
     const res_final = JSON.parse(res);
 
@@ -58,6 +60,7 @@ export class AnalysisService {
       const analysis_save = await this.analysisRepository.save(analysis_object);
       await this.cacheManager.clear();
       this.schedulerService.resumeDailyReminders();
+      this.vectorService.saveAnalysisChunks(analysis_save);
       return {
         message: "Analysis done successfully",
       };
@@ -66,6 +69,7 @@ export class AnalysisService {
         "Server Error, please try again later",
         error,
       );
+      console.log("error", error);
     }
   }
 

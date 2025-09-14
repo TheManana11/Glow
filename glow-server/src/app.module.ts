@@ -15,6 +15,8 @@ import { DoctorModule } from './doctor/doctor.module';
 import { Doctor } from "./doctor/entities/doctor.entity";
 import { ScheduleModule } from '@nestjs/schedule'
 import { SchedulerModule } from './scheduler/scheduler.module';
+import { VectorModule } from './vector/vector.module';
+import { AnalysisChunk } from "./vector/entities/vector.entity";
 
 @Module({
   imports: [
@@ -26,7 +28,7 @@ import { SchedulerModule } from './scheduler/scheduler.module';
       username: process.env.DB_USER,
       password: process.env.DB_PASS,
       database: process.env.DB_NAME,
-      entities: [User, Analysis, Doctor],
+      entities: [User, Analysis, Doctor, AnalysisChunk],
       synchronize: true,
     }),
     ThrottlerModule.forRoot(THROTTLE_CONFIG),
@@ -38,6 +40,7 @@ import { SchedulerModule } from './scheduler/scheduler.module';
     HelpersModule,
     DoctorModule,
     SchedulerModule,
+    VectorModule,
   ],
   providers: [ { provide: APP_GUARD, useClass: ThrottlerGuard } ],
 })

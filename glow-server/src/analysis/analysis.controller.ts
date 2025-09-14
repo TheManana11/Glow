@@ -21,7 +21,7 @@ export class AnalysisController {
   constructor(private readonly analysisService: AnalysisService) {}
 
   @Post()
-  @Throttle({ short: { limit: 1, ttl: days(1) } })
+  // @Throttle({ short: { limit: 1, ttl: days(1) } })
   @HttpCode(201)
   create(@Req() req: Request, @Body() createAnalysisDto: CreateAnalysisDto) {
     return this.analysisService.create(req, createAnalysisDto);
