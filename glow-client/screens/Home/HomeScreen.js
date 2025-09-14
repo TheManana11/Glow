@@ -4,17 +4,16 @@ import Footer from '../../components/Footer/Footer';
 import * as SecureStore from 'expo-secure-store';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useNavigation } from '@react-navigation/native';
 import { Feather } from '@expo/vector-icons';
 import SingleAnalysis from '../../components/Analysis/SingleAnalysis.js'
+import { BACKEND_URL } from '@env';
 
-const HomeScreen = () => {
+const HomeScreen = ({ navigation }) => {
 
   const [analysis, setAnalysis] = useState([]);
   const [user, setUser] = useState({});
   const [token, setToken] = useState('');
   const [score, setScore] = useState('');
-  const navigation = useNavigation();
 
 
   const fetchData = async () => {
@@ -22,7 +21,7 @@ const HomeScreen = () => {
       const myUser = await SecureStore.getItemAsync('user');
       setUser(JSON.parse(myUser));
       try {
-        const response = await axios.get('http://192.168.10.105:3000/analysis/all-user-analysis', {
+        const response = await axios.get(`${BACKEND_URL}/analysis/all-user-analysis`, {
           headers: { 'Content-type': 'application/json', 'Authorization': `Bearer ${token}` }
         });
         setAnalysis(response.data.payload);
@@ -42,11 +41,11 @@ const HomeScreen = () => {
       <ScrollView contentContainerStyle={styles.content}>
         <View style={styles.header}>
           <Image
-          source={{ uri: `http://192.168.10.105:3000/${user.image_url}` }}
+          source={ user.image_url ? { uri: `${BACKEND_URL}/${user.image_url}` } : require('../../assets/images/profile.png') }
           style={styles.avatar}
           resizeMode="cover"
         />
-        <Text style={styles.headerName}>{user.first_name}</Text>
+        <Text style={styles.headerName}>Welcome {user.first_name}</Text>
         </View>
         <Text style={styles.headerText}>AI Powered{"\n"}<Text style={styles.bold}>Skin Analysis</Text></Text>
         <Text style={styles.subText}>
@@ -57,7 +56,7 @@ const HomeScreen = () => {
           style={styles.image}
           resizeMode="cover"
         />
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity onPress={() => navigation.navigate('AnalysisMain')} style={styles.button}>
           <Text style={styles.buttonText}>Start Analysis</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.learnMoreButton}>
@@ -105,7 +104,7 @@ const HomeScreen = () => {
           </Text>
         </View>
 
-        <TouchableOpacity style={styles.analysisNowButton}>
+        <TouchableOpacity onPress={() => navigation.navigate('AnalysisMain')} style={styles.analysisNowButton}>
           <Text style={styles.analysisNowText}>Start Your Analysis Now</Text>
         </TouchableOpacity>
       </ScrollView>

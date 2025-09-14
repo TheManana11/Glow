@@ -11,6 +11,8 @@ import styles from "./style";
 import { Feather } from "@expo/vector-icons";
 import axios from "axios";
 import * as SecureStore from 'expo-secure-store';
+import { BACKEND_URL } from '@env'
+import Toast from 'react-native-toast-message';
 
 export default function SignupScreen({ navigation }) {
   const [formData, setFormData] = useState({
@@ -25,20 +27,13 @@ export default function SignupScreen({ navigation }) {
 
   const handleSubmit = async () => {
     try {
-    const response = await axios.post('http://192.168.10.105:3000/users/register', formData,{
+    const response = await axios.post(`${BACKEND_URL}/users/register`, formData,{
       headers: { 'Content-Type': 'application/json',
        }, 
     });
 
     const token = response.data.token;
     await SecureStore.setItemAsync('token', token);
-
-
-    // console.log('====================================');
-    // console.log("Request sending ... ");
-    // console.log( "Response Message: ", response.data.message);
-    // console.log( "Response Payload: ", response.data.payload);
-    // console.log('====================================');
 
     setFormData({
       first_name: "",
@@ -49,10 +44,18 @@ export default function SignupScreen({ navigation }) {
       password: "",
       role: "",
     });
+    Toast.show({
+      type: 'success',
+      text1: 'Success!',
+      text2: 'Registered successfully',
+    });
+    navigation.navigate('Home');
     } catch (error) {
-      console.log('====================================');
-      console.log("Error Message: ", error.response.data.message);
-      console.log('====================================');
+       Toast.show({
+      type: 'error',
+      text1: 'Error!',
+      text2: error.response.data.message,
+    });
     }
   }
 

@@ -1,5 +1,6 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import Toast from 'react-native-toast-message';
 
 import LoginScreen from './screens/Login/LoginScreen'
 import HomeScreen from "./screens/Home/HomeScreen";
@@ -10,10 +11,12 @@ import DoctorsScreen from './screens/Doctors/DoctorsScreen';
 import MainScreen from './screens/Progress/MainScreen'
 import AnalysisMain from './screens/AnalysisMain/AnalysisMain'
 
+
 export default function App() {
   const Stack = createNativeStackNavigator();
 
   return (
+    <>
       <NavigationContainer>
         <Stack.Navigator initialRouteName='Login' screenOptions={{ headerShown: false }}>
           <Stack.Screen name='Home' component={HomeScreen} />
@@ -26,6 +29,9 @@ export default function App() {
           <Stack.Screen name="AnalysisMain" component={AnalysisMain} />
         </Stack.Navigator>
       </NavigationContainer>
+
+      <Toast />
+      </>
   );
 }
 
