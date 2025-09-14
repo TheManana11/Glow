@@ -75,7 +75,7 @@ export class UserService {
     };
   }
 
-  async findOne(id: string, res: Response) {
+  async findOne(id: string) {
     const user = await this.userRepository.findOneBy({ id });
     this.errorService.NotFound(`Failed to get user with is ${id}`, !user);
     return {
@@ -84,7 +84,7 @@ export class UserService {
     };
   }
 
-  async update(id: string, updateUserDto: UpdateUserDto, res: Response) {
+  async update(id: string, updateUserDto: UpdateUserDto) {
     await this.userRepository.update(id, updateUserDto);
     const updated_user = this.userRepository.findOneBy({ id });
     return {
@@ -94,7 +94,7 @@ export class UserService {
   }
 
 
- async updateProfilePic(id: string, updateProfileDto: UpdateProfileDto, res: Response) {
+ async updateProfilePic(id: string, updateProfileDto: UpdateProfileDto) {
   const base64String = updateProfileDto.image_url;
 
   const filename = await this.helperService.base64ToImage(base64String, "profiles");
@@ -112,7 +112,7 @@ export class UserService {
 }
 
 
-  async updatePassword(id: string, updatePasswordDto: UpdatePasswordDto, res: Response) {
+  async updatePassword(id: string, updatePasswordDto: UpdatePasswordDto) {
     const user = await this.userRepository.findOneBy({ id });
     const match: boolean = await bcrypt.compare(updatePasswordDto.oldPassword, user?.password)
     this.errorService.BadRequest('Old password is incorrect', !match);
@@ -128,11 +128,21 @@ export class UserService {
     };
   }
 
-  async remove(id: string, res: Response) {
+  async remove(id: string) {
     const deleted_user = await this.userRepository.delete({ id });
     return {
       message: `User with id ${id} deleted successfully`,
       payload: deleted_user,
+    };
+  }
+
+
+  async findOneByNumber(number: string) {
+    const user = await this.userRepository.findOneBy({ phone_number: number });
+    this.errorService.NotFound(`Failed to get user with is phone number ${number}`, !user);
+    return {
+      message: `User with id phone number ${number} fetched successfully`,
+      payload: user,
     };
   }
 }

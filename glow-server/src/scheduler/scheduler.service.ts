@@ -4,22 +4,23 @@ import { HelpersService } from '../helpers/helpers.service';
 
 @Injectable()
 export class SchedulerService {
+  private phone_number: any = '+96171236842';
   constructor(
     private readonly helpers: HelpersService,
     private readonly registry: SchedulerRegistry,
   ) {}
 
-  @Cron('0 8 * * *', { timeZone: 'Asia/Beirut', name: 'morningJob', disabled: true })
+  @Cron('30 20 * * *', { timeZone: 'Asia/Beirut', name: 'morningJob', disabled: true })
   async morning() {
     console.log("test");
     
-    await this.helpers.webhookMessage('+96171236842', "🌞 Good morning! Remember to start your day with your skincare routine for fresh, healthy skin. 💧 Consistency is key to healthy, glowing skin — your future self will thank you! ✨"); 
+    await this.helpers.webhookMessage(this.phone_number.slice(1), "🌞 Good morning! Remember to start your day with your skincare routine for fresh, healthy skin. 💧 Consistency is key to healthy, glowing skin — your future self will thank you! ✨"); 
   }
 
-  @Cron('0 20 * * *', { timeZone: 'Asia/Beirut', name: 'eveningJob', disabled: true })
+  @Cron('0 21 * * *', { timeZone: 'Asia/Beirut', name: 'eveningJob', disabled: true })
   async evening() {
     console.log("test");
-    await this.helpers.webhookMessage('+96171236842', '🌙 Good evening! Take a few minutes to pamper your skin before bedtime. Your skin will thank you.');
+    await this.helpers.webhookMessage(this.phone_number.slice(1), '🌙 Good evening! Take a few minutes to pamper your skin before bedtime. Your skin will thank you.');
   }
 
   pauseDailyReminders() {
@@ -27,7 +28,8 @@ export class SchedulerService {
     this.registry.getCronJob('eveningJob').stop();
   }
 
-  resumeDailyReminders() {
+  resumeDailyReminders(number: any) {
+    this.phone_number = number;
     this.registry.getCronJob('morningJob').start();
     this.registry.getCronJob('eveningJob').start();
     console.log("Resume schedulers");

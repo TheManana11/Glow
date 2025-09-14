@@ -68,7 +68,4 @@ export class Analysis {
   @ManyToOne(() => User, (user) => user.analyses, { onDelete: "CASCADE" })
   @JoinColumn({ name: "user_id" })
   user: User;
-
-  @OneToMany(() => AnalysisChunk, (chunk) => chunk.analysis)
-  chunks: AnalysisChunk[];
 }

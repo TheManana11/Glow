@@ -53,7 +53,7 @@ export class UserController {
   @HttpCode(200)
   @Get(":id")
   async findOne(@Param("id") id: string, @Res() res: Response) {
-    return await this.userService.findOne(id, res);
+    return await this.userService.findOne(id);
   }
 
   @UseGuards(AuthGuard)
@@ -63,9 +63,8 @@ export class UserController {
   async update(
     @Param("id") id: string,
     @Body() updateUserDto: UpdateUserDto,
-    @Res() res: Response,
   ) {
-    return await this.userService.update(id, updateUserDto, res);
+    return await this.userService.update(id, updateUserDto);
   }
 
   @UseGuards(AuthGuard)
@@ -75,9 +74,8 @@ export class UserController {
   async updateProfile(
     @Param("id") id: string,
     @Body() updateProfileDto: UpdateProfileDto,
-    @Res() res: Response,
   ) {
-    return await this.userService.updateProfilePic(id, updateProfileDto, res);
+    return await this.userService.updateProfilePic(id, updateProfileDto);
   }
 
   @UseGuards(AuthGuard)
@@ -87,16 +85,15 @@ export class UserController {
   async updatePassword(
     @Param("id") id: string,
     @Body() updatePasswordDto: UpdatePasswordDto,
-    @Res() res: Response,
   ) {
-    return await this.userService.updatePassword(id, updatePasswordDto, res);
+    return await this.userService.updatePassword(id, updatePasswordDto);
   }
 
   @UseGuards(AuthGuard)
   @ApiBearerAuth()
   @HttpCode(200)
   @Delete(":id")
-  async remove(@Param("id") id: string, @Res() res: Response) {
-    return await this.userService.remove(id, res);
+  async remove(@Param("id") id: string) {
+    return await this.userService.remove(id);
   }
 }

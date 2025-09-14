@@ -11,10 +11,12 @@ import { ErrorService } from 'src/helpers/errors.service';
 import { ScheduleModule } from '@nestjs/schedule';
 import { SchedulerService } from 'src/scheduler/scheduler.service';
 import { VectorModule } from 'src/vector/vector.module';
+import { UserModule } from 'src/user/user.module';
+import { UserService } from 'src/user/user.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Analysis, User]), HelpersModule, ScheduleModule, VectorModule],
+  imports: [TypeOrmModule.forFeature([Analysis, User]), HelpersModule, ScheduleModule, VectorModule, UserModule],
   controllers: [AnalysisController],
-  providers: [AnalysisService, TokenService, HelpersService, ErrorService, SchedulerService],
+  providers: [AnalysisService, TokenService, HelpersService, ErrorService, SchedulerService, UserService],
 })
 export class AnalysisModule {}
