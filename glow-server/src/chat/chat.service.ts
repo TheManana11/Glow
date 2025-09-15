@@ -29,6 +29,13 @@ export class ChatService {
     const response = await this.userService.findOneByNumber(`+${senderId}`);
     const userId = response.payload?.id;
 
+    console.log('====================================');
+    console.log(senderId);
+    console.log('====================================');
+    console.log('====================================');
+    console.log(userId);
+    console.log('====================================');
+
     const final_prompt = await this.vectorService.findMostRelevantChunks(messageText, userId || "");
 
     const aiResponse = await this.helpersService.call_model(final_prompt);

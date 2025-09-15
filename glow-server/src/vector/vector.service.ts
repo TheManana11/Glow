@@ -129,7 +129,7 @@ export class VectorService {
 
 
     if (allChunks.length === 0) {
-      return { prompt, chunks: [] };
+      return { prompt, relevantChunks: [] };
     }
 
     const similarities = allChunks.map(chunk => ({

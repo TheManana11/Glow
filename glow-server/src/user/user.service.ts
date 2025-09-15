@@ -137,7 +137,7 @@ export class UserService {
   }
 
 
-  async findOneByNumber(number: string) {
+  async findOneByNumber(number: any) {
     const user = await this.userRepository.findOneBy({ phone_number: number });
     this.errorService.NotFound(`Failed to get user with is phone number ${number}`, !user);
     return {
