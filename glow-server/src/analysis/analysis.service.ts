@@ -71,12 +71,7 @@ export class AnalysisService {
       console.log(error);
       console.log('====================================');
     }
-      
-
-
-
-
-      
+    
       this.vectorService.saveAnalysisChunks(analysis_save);
       return {
         message: "Analysis done successfully",
