@@ -7,9 +7,12 @@ import * as SecureStore from 'expo-secure-store';
 import axios from 'axios';
 import { BACKEND_URL } from '@env';
 import Toast from 'react-native-toast-message';
+import { useDispatch } from 'react-redux';
+import { addOne } from '../../redux/slices/analysis';
 
 export default function AnalysisScreen({ setCanGoToScreens, setActiveTab }) {
   const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
 
   const openCamera = async () => {
     try {
@@ -66,6 +69,7 @@ export default function AnalysisScreen({ setCanGoToScreens, setActiveTab }) {
         text1: 'Upload Successful',
         text2: 'Analysis done successfully',
       });
+      dispatch(addOne(response.data.payload));
       setCanGoToScreens(true);
       setActiveTab('Problems');
     } catch (error) {

@@ -7,10 +7,15 @@ import axios from 'axios';
 import { Feather } from '@expo/vector-icons';
 import SingleAnalysis from '../../components/Analysis/SingleAnalysis.js'
 import { BACKEND_URL } from '@env';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectAnalysis, setAll } from '../../redux/slices/analysis.js';
 
 const HomeScreen = ({ navigation }) => {
 
-  const [analysis, setAnalysis] = useState([]);
+  const dispatch = useDispatch();
+  const analysis = useSelector(selectAnalysis);
+
+  // const [analysis, setAnalysis] = useState([]);
   const [user, setUser] = useState({});
   const [token, setToken] = useState('');
   const [score, setScore] = useState('');
@@ -24,7 +29,8 @@ const HomeScreen = ({ navigation }) => {
         const response = await axios.get(`${BACKEND_URL}/analysis/all-user-analysis`, {
           headers: { 'Content-type': 'application/json', 'Authorization': `Bearer ${token}` }
         });
-        setAnalysis(response.data.payload);
+        // setAnalysis(response.data.payload);
+        dispatch(setAll(response.data.payload));
         setScore(response.data.payload[0].scores.general_skin_health_score);
         setToken(token);
       } catch (err) {

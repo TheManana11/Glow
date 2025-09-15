@@ -1,14 +1,17 @@
 import { View, Text } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import styles from "./style";
+import { useSelector } from "react-redux";
+import { selectAnalysis } from "../../redux/slices/analysis";
 
 const OverviewScreen = () => {
+  const analysis = useSelector(selectAnalysis);
   return (
     <View style={styles.container}>
       <View style={styles.card}>
         <View style={styles.cardLeft}>
           <Text style={styles.cardTitle}>Overall Score</Text>
-          <Text style={styles.cardValue}>78%</Text>
+          <Text style={styles.cardValue}>{analysis[0].scores.general_skin_health_score}%</Text>
         </View>
         <View style={styles.cardRight}>
           <Feather name="trending-up" size={16} color="#4CAF50" />
@@ -19,7 +22,7 @@ const OverviewScreen = () => {
       <View style={styles.card}>
         <View style={styles.cardLeft}>
           <Text style={styles.cardTitle}>Acne Score</Text>
-          <Text style={styles.cardValue}>3.1</Text>
+          <Text style={styles.cardValue}>{analysis[0].scores.acne_score}</Text>
         </View>
         <View style={styles.cardRight}>
           <Feather name="trending-down" size={16} color="red" />
@@ -30,7 +33,7 @@ const OverviewScreen = () => {
       <View style={styles.card}>
         <View style={styles.cardLeft}>
           <Text style={styles.cardTitle}>Hydration</Text>
-          <Text style={styles.cardValue}>94%</Text>
+          <Text style={styles.cardValue}>{analysis[0].scores.hydration_score}%</Text>
         </View>
         <View style={styles.cardRight}>
           <Feather name="trending-up" size={16} color="#4CAF50" />
@@ -41,7 +44,7 @@ const OverviewScreen = () => {
       <View style={styles.card}>
         <View style={styles.cardLeft}>
           <Text style={styles.cardTitle}>Texture</Text>
-          <Text style={styles.cardValue}>7.8</Text>
+          <Text style={styles.cardValue}>{analysis[0].scores.texture_score}</Text>
         </View>
         <View style={styles.cardRight}>
           <Feather name="trending-up" size={16} color="#4CAF50" />
