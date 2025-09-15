@@ -7,11 +7,11 @@ import styles from './style';
 import Footer from '../../components/Footer/Footer';
 
 const AnalysisMain = () => {
-  const [activeTab, setActiveTab] = useState("Analysis"); // Default to Analysis screen
+  const [activeTab, setActiveTab] = useState("Analysis");
+  const [canGoToScreens, setCanGoToScreens] = useState(false);
 
-  // Dynamically render the selected screen
   const renderContent = () => {
-    if (activeTab === "Analysis") return <AnalysisScreen />;
+    if (activeTab === "Analysis") return <AnalysisScreen setActiveTab={setActiveTab} setCanGoToScreens={setCanGoToScreens} />;
     if (activeTab === "Problems") return <ProblemsScreen setActiveTab={setActiveTab} />;
     return <RoutineScreen />;
   };
@@ -19,16 +19,13 @@ const AnalysisMain = () => {
   return (
     <>
     <View style={styles.container}>
-      {/* HEADER */}
       <Text style={styles.title}>AI Skin Analysis</Text>
       <Text style={styles.subtitle}>
         Upload a clear photo of your skin for instant AI-powered analysis and personalized recommendations.
       </Text>
 
-      {/* BUTTONS WITH LABELS */}
       <View style={styles.buttonContainer}>
         
-        {/* Button 1 - Analysis */}
         <View style={styles.buttonWithLabel}>
           <TouchableOpacity
             style={[styles.navButton, activeTab === "Analysis" && styles.activeButton]}
@@ -46,11 +43,11 @@ const AnalysisMain = () => {
           </Text>
         </View>
 
-        {/* Button 2 - Problems */}
         <View style={styles.buttonWithLabel}>
           <TouchableOpacity
             style={[styles.navButton, activeTab === "Problems" && styles.activeButton]}
             onPress={() => setActiveTab("Problems")}
+            disabled={!canGoToScreens}
           >
             <Text style={styles.buttonText}>2</Text>
           </TouchableOpacity>
@@ -64,11 +61,11 @@ const AnalysisMain = () => {
           </Text>
         </View>
 
-        {/* Button 3 - Routine */}
         <View style={styles.buttonWithLabel}>
           <TouchableOpacity
             style={[styles.navButton, activeTab === "Routine" && styles.activeButton]}
             onPress={() => setActiveTab("Routine")}
+            disabled={!canGoToScreens}
           >
             <Text style={styles.buttonText}>3</Text>
           </TouchableOpacity>
@@ -83,7 +80,6 @@ const AnalysisMain = () => {
         </View>
       </View>
 
-      {/* CONTENT AREA */}
       <ScrollView style={styles.subRouteContainer}>
         {renderContent()}
       </ScrollView>
