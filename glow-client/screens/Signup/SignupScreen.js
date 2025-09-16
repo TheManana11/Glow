@@ -33,7 +33,9 @@ export default function SignupScreen({ navigation }) {
     });
 
     const token = response.data.token;
+    const user = response.data.payload;
     await SecureStore.setItemAsync('token', token);
+    await SecureStore.setItemAsync('user', JSON.stringify(user));
 
     setFormData({
       first_name: "",

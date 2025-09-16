@@ -77,6 +77,34 @@ export default StyleSheet.create({
     color: '#808080',
   },
 
+  /** Dynamic Severity Backgrounds **/
+  mildBackground: {
+    backgroundColor: '#FEF8E7', // Light yellow
+  },
+  moderateBackground: {
+    backgroundColor: '#FCEEE9', // Light orange
+  },
+  severeBackground: {
+    backgroundColor: '#FDECEC', // Light red
+  },
+  defaultBackground: {
+    backgroundColor: '#F0F0F0', // Fallback gray
+  },
+
+  /** Dynamic Severity Text Colors **/
+  mildText: {
+    color: '#E5A029',
+  },
+  moderateText: {
+    color: '#E55D2E',
+  },
+  severeText: {
+    color: '#D92D20',
+  },
+  defaultText: {
+    color: '#808080',
+  },
+
   /** Button **/
   button: {
     backgroundColor: '#D89250',

@@ -50,7 +50,10 @@ export default function SignupScreen({ navigation }) {
       text1: 'Error!',
       text2: error.response.data.message,
     });
-    }
+    console.log('====================================');
+    console.log(error.response);
+    console.log('====================================');
+  }
   };
 
 

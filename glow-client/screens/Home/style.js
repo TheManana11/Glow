@@ -201,4 +201,48 @@ export default StyleSheet.create({
     color: '#fff',
     fontWeight: 'bold',
   },
+  emptyStateContainer: {
+  alignItems: 'center',
+  justifyContent: 'center',
+  marginBottom: 30,
+  marginTop: 20,
+  padding: 20,
+  backgroundColor: '#FFF8F0',
+  borderRadius: 10,
+},
+
+emptyImage: {
+  width: 150,
+  height: 150,
+  marginBottom: 20,
+},
+
+emptyTitle: {
+  fontSize: 20,
+  fontWeight: 'bold',
+  color: '#D89250',
+  marginBottom: 8,
+},
+
+emptySubtitle: {
+  fontSize: 16,
+  color: '#808080',
+  textAlign: 'center',
+  marginBottom: 20,
+  lineHeight: 22,
+},
+
+emptyButton: {
+  backgroundColor: '#D89250',
+  paddingVertical: 12,
+  paddingHorizontal: 30,
+  borderRadius: 8,
+},
+
+emptyButtonText: {
+  color: '#fff',
+  fontSize: 16,
+  fontWeight: '600',
+},
+
 });

@@ -13,7 +13,7 @@ const MainScreen = () => {
     if (activeTab === "Overview") {
       return <OverviewScreen />;
     }
-    return <HistoryScreen />;
+    return <HistoryScreen  />;
   };
 
   return (

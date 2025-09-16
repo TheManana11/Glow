@@ -118,6 +118,12 @@ export default StyleSheet.create({
     color: '#F7A53C',
     fontWeight: '600',
   },
+  stepRealName: {
+     fontSize: 16,
+    color: '#D89250',
+    marginTop: 4,
+    lineHeight: 20,
+  },
   stepDescription: {
     fontSize: 16,
     color: '#808080',

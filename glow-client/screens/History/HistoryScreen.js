@@ -1,67 +1,50 @@
-import { View, Text, ScrollView } from "react-native";
+import { View, Text, ScrollView, TouchableOpacity } from "react-native";
 import { MaterialCommunityIcons, Feather } from "@expo/vector-icons";
 import styles from "./style";
-import Footer from '../../components/Footer/Footer'
+import { useSelector } from "react-redux";
+import { selectAnalysis } from "../../redux/slices/analysis";
 
-const historyData = [
-  {
-    date: "August 30, 2025",
-    score: 8.3,
-    improvements: [
-      "Significant reduction in acne breakouts",
-      "Improved skin hydration levels",
-      "More even skin texture",
-    ],
-    focus: [
-      "Slight darkening around eyes",
-      "Monitor vitamin C serum application",
-    ],
-  },
-  {
-    date: "August 23, 2025",
-    score: 7.2,
-    improvements: [
-      "Significant reduction in acne breakouts",
-      "Improved skin hydration levels",
-      "More even skin texture",
-    ],
-    focus: [
-      "Slight darkening around eyes",
-      "Monitor vitamin C serum application",
-    ],
-  },
-  {
-    date: "August 20, 2025",
-    score: 6.8,
-    improvements: [
-      "Significant reduction in acne breakouts",
-      "Improved skin hydration levels",
-      "More even skin texture",
-    ],
-    focus: [
-      "Slight darkening around eyes",
-      "Monitor vitamin C serum application",
-    ],
-  },
-];
 
 const HistoryScreen = () => {
+  const analysis = useSelector(selectAnalysis);
+
+  if (!analysis || analysis.length === 0) {
+    return (
+      <View style={styles.emptyStateContainer}>
+        <Text style={styles.emptyTitle}>No History Yet</Text>
+        <Text style={styles.emptySubtitle}>
+          Start your first analysis to see all your history and track your skin health journey.
+        </Text>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('AnalysisMain')}
+          style={styles.emptyButton}
+        >
+          <Text style={styles.emptyButtonText}>Start Now</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
+
+  const formattedDate = (date) => {
+   return new Date(date).toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+})};
   return (
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-        {historyData.map((item, index) => (
+        {analysis.map((item, index) => (
           <View key={index} style={styles.card}>
-            {/* Date and Score */}
             <View style={styles.headerRow}>
               <View style={styles.dateRow}>
                 <Feather name="calendar" size={18} color="#D4A373" />
-                <Text style={styles.dateText}>{item.date}</Text>
+                <Text style={styles.dateText}>{formattedDate(item.created_at)}</Text>
               </View>
-              <View style={item.score >= 8 ? styles.scoreBadge : styles.warningBadge}>
-                <Text style={item.score >= 8 ? styles.scoreText : styles.warning}>{item.score}/10</Text>
+              <View style={item.scores.general_skin_health_score >= 80 ? styles.scoreBadge : styles.warningBadge}>
+                <Text style={item.scores.general_skin_health_score >= 80 ? styles.scoreText : styles.warning}>{item.scores.general_skin_health_score / 10}/10</Text>
               </View>
             </View>
 
-            {/* Improvements */}
             <View style={styles.section}>
               <View style={styles.sectionTitleRow}>
                 <MaterialCommunityIcons
@@ -69,9 +52,9 @@ const HistoryScreen = () => {
                   size={18}
                   color="#4CAF50"
                 />
-                <Text style={styles.improvementTitle}>Improvements</Text>
+                <Text style={styles.improvementTitle}>Goals to Improve</Text>
               </View>
-              {item.improvements.map((point, i) => (
+              {item.goals.map((point, i) => (
                 <View style={styles.bulletRow} key={i}>
                   <View style={styles.greenDot} />
                   <Text style={styles.bulletText}>{point}</Text>
@@ -79,16 +62,15 @@ const HistoryScreen = () => {
               ))}
             </View>
 
-            {/* Area to Focus */}
             <View style={styles.section}>
               <View style={styles.sectionTitleRow}>
                 <Feather name="alert-circle" size={18} color="#F4A300" />
                 <Text style={styles.focusTitle}>Area to Focus</Text>
               </View>
-              {item.focus.map((point, i) => (
+              {item.problems.map((point, i) => (
                 <View style={styles.bulletRow} key={i}>
                   <View style={styles.yellowDot} />
-                  <Text style={styles.bulletText}>{point}</Text>
+                  <Text style={styles.bulletText}>{point.title}</Text>
                 </View>
               ))}
             </View>

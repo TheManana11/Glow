@@ -9,11 +9,12 @@ import Footer from '../../components/Footer/Footer';
 const AnalysisMain = () => {
   const [activeTab, setActiveTab] = useState("Analysis");
   const [canGoToScreens, setCanGoToScreens] = useState(false);
+  const [analysis, setAnalysis] = useState({});
 
   const renderContent = () => {
-    if (activeTab === "Analysis") return <AnalysisScreen setActiveTab={setActiveTab} setCanGoToScreens={setCanGoToScreens} />;
-    if (activeTab === "Problems") return <ProblemsScreen setActiveTab={setActiveTab} />;
-    return <RoutineScreen />;
+    if (activeTab === "Analysis") return <AnalysisScreen setAnalysis={setAnalysis} setActiveTab={setActiveTab} setCanGoToScreens={setCanGoToScreens} />;
+    if (activeTab === "Problems") return <ProblemsScreen setActiveTab={setActiveTab} analysis={analysis} />;
+    return <RoutineScreen analysis={analysis}/>;
   };
 
   return (
