@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Image, TouchableOpacity, ScrollView, Alert } from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  ScrollView,
+  Alert,
+  TextInput
+} from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import * as SecureStore from 'expo-secure-store';
 import axios from 'axios';
@@ -9,10 +17,17 @@ import Footer from '../../components/Footer/Footer';
 import styles from './style';
 import Toast from 'react-native-toast-message';
 
-export default function ProfileScreen() {
+export default function ProfileScreen({ navigation }) {
   const [profileImage, setProfileImage] = useState(null);
   const [base64Image, setBase64Image] = useState(null);
   const [user, setUser] = useState(null);
+  const [btn, setBtn] = useState(false);
+
+
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [age, setAge] = useState('');
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -21,6 +36,12 @@ export default function ProfileScreen() {
         if (storedUser) {
           const parsedUser = JSON.parse(storedUser);
           setUser(parsedUser);
+
+          setFirstName(parsedUser?.first_name || '');
+          setLastName(parsedUser?.last_name || '');
+          setEmail(parsedUser?.email || '');
+          setAge(parsedUser?.age ? String(parsedUser.age) : '');
+
           if (parsedUser?.image_url) {
             setProfileImage({ uri: `${BACKEND_URL}/${parsedUser.image_url}` });
           } else {
@@ -97,6 +118,30 @@ export default function ProfileScreen() {
     }
   };
 
+
+  const handleSignOut = async () => {
+    try {
+      await SecureStore.deleteItemAsync('user');
+      await SecureStore.deleteItemAsync('token');
+      Toast.show({
+        type: 'success',
+        text1: 'Signed Out',
+        text2: 'You have been signed out successfully.',
+      });
+
+      navigation.navigate('Login');
+    } catch (error) {
+      Toast.show({
+        type: 'error',
+        text1: 'Sign Out Failed',
+        text2: 'Something went wrong while signing out.',
+      });
+      console.log('====================================');
+      console.log(error);
+      console.log('====================================');
+    }
+  };
+
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.content}>
@@ -109,56 +154,68 @@ export default function ProfileScreen() {
             {user ? `${user.first_name} ${user.last_name}` : 'Guest User'}
           </Text>
           <Text style={styles.email}>{user?.email || 'guest@example.com'}</Text>
+
           <TouchableOpacity onPress={pickImage}>
             <Text style={styles.changePhoto}>Change Profile Picture</Text>
           </TouchableOpacity>
+
           <TouchableOpacity style={styles.editIcon}>
-            <Feather name="edit-2" size={18} color="#D89250" />
+            <Feather name="edit-2" size={18} color="#D89250" onPress={() => setBtn(true)} />
           </TouchableOpacity>
         </View>
 
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Personal Information</Text>
-          <View style={styles.row}>
-            <Feather name="user" size={20} color="#D89250" />
-            <View style={styles.column}>
-              <Text style={styles.label}>First name</Text>
-              <Text style={styles.value}>{user?.first_name || '-'}</Text>
-            </View>
-          </View>
-          <View style={styles.row}>
-            <Feather name="user" size={20} color="#D89250" />
-            <View style={styles.column}>
-              <Text style={styles.label}>Last name</Text>
-              <Text style={styles.value}>{user?.last_name || '-'}</Text>
-            </View>
-          </View>
-          <View style={styles.row}>
-            <Feather name="mail" size={20} color="#D89250" />
-            <View style={styles.column}>
-              <Text style={styles.label}>Email</Text>
-              <Text style={styles.value}>{user?.email || '-'}</Text>
-            </View>
-          </View>
-          <View style={styles.row}>
-            <Feather name="calendar" size={20} color="#D89250" />
-            <View style={styles.column}>
-              <Text style={styles.label}>Age</Text>
-              <Text style={styles.value}>{user?.age ? `${user.age} years old` : '-'}</Text>
-            </View>
-          </View>
+
+          <TextInput
+            style={styles.input}
+            value={firstName}
+            placeholder="First Name"
+            onChangeText={setFirstName}
+          />
+
+          <TextInput
+            style={styles.input}
+            value={lastName}
+            placeholder="Last Name"
+            onChangeText={setLastName}
+          />
+
+          <TextInput
+            style={styles.input}
+            value={email}
+            placeholder="Email"
+            onChangeText={setEmail}
+            keyboardType="email-address"
+          />
+
+          <TextInput
+            style={styles.input}
+            value={age}
+            placeholder="Age"
+            onChangeText={setAge}
+            keyboardType="numeric"
+          />
+
+          {btn && (
+            <TouchableOpacity
+              style={styles.btn}
+            >
+              <Text style={styles.btnText}>Save</Text>
+            </TouchableOpacity>
+          )}
+
         </View>
 
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Account Settings</Text>
-          <View style={styles.row}>
-            <Feather name="lock" size={20} color="#D89250" />
-            <Text style={styles.value}>Change Password</Text>
-          </View>
+          <TouchableOpacity style={styles.row}>
+            <Feather name="lock" size={20} color="#D89250" style={{ marginRight: 10 }} />
+            <Text style={styles.accountSettingText}>Change Password</Text>
+          </TouchableOpacity>
         </View>
 
-        <TouchableOpacity style={styles.signOutButton}>
-          <Feather name="log-out" size={20} color="#EB4D4D" />
+        <TouchableOpacity onPress={() => handleSignOut()} style={styles.signOutButton}>
           <Text style={styles.signOutText}>Sign Out</Text>
         </TouchableOpacity>
       </ScrollView>

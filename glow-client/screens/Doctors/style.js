@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   subtitle: {
-    fontSize: 16,
+    fontSize: 14,
     color: '#555',
     marginBottom: 30,
     textAlign: 'center'
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   specialty: {
-    fontSize: 16,
+    fontSize: 13,
     marginTop: 2,
   },
   priceContainer: {
@@ -84,9 +84,9 @@ const styles = StyleSheet.create({
     color: '#888',
   },
   text: {
-    fontSize: 16,
+    fontSize: 14,
     marginVertical: 2,
-    color: '#333',
+    color: '#808080',
   },
   infoRow: {
     flexDirection: 'row',

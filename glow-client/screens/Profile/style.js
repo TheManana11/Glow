@@ -93,4 +93,36 @@ export default StyleSheet.create({
     color: '#EB4D4D',
     fontWeight: 'bold',
   },
+  input: {
+  borderWidth: 1,
+  borderColor: '#ccc',
+  borderRadius: 8,
+  padding: 12,
+  marginBottom: 20, // Adds space between inputs
+  fontSize: 16,
+  color: '#333',
+  backgroundColor: '#fff',
+},
+
+row: {
+  flexDirection: 'row',
+  alignItems: 'center',
+  paddingVertical: 12,
+},
+
+btn: {
+  backgroundColor: '#D89250',
+  paddingVertical: 12,
+  paddingHorizontal: 30,
+  borderRadius: 8,
+  marginTop: 10
+},
+
+btnText: {
+  color: '#fff',
+  fontSize: 16,
+  fontWeight: '600',
+  textAlign: 'center'
+},
+
 });

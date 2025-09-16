@@ -1,8 +1,12 @@
-import { View, Text } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import styles from './style';
+import { useNavigation } from '@react-navigation/native';
 
-const SingleAnalysis = ({ title, dateCreated, score }) => {
+const SingleAnalysis = ({ id, title, dateCreated, score }) => {
+
+  const navigation = useNavigation();
+
   const getTimeAgo = (date) => {
     const now = new Date();
     const created = new Date(date);
@@ -28,7 +32,11 @@ const SingleAnalysis = ({ title, dateCreated, score }) => {
   const status = getStatus(score);
 
   return (
-    <View style={styles.container}>
+    <TouchableOpacity
+      style={styles.container}
+      onPress={() => navigation.navigate('SingleAnalysis', { id })}
+      activeOpacity={0.8} 
+    >
       <Text style={styles.title}>{title}</Text>
 
       <View style={styles.bottomRow}>
@@ -41,7 +49,7 @@ const SingleAnalysis = ({ title, dateCreated, score }) => {
           <Text style={styles.statusText}>{status.label}</Text>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

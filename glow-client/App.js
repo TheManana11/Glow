@@ -12,6 +12,7 @@ import DoctorProfileScreen from './screens/DoctorProfile/DoctorProfileScreen';
 import DoctorsScreen from './screens/Doctors/DoctorsScreen';
 import MainScreen from './screens/Progress/MainScreen'
 import AnalysisMain from './screens/AnalysisMain/AnalysisMain'
+import SingleAnalysisScreen from './screens/SingleAnalysis/SingleAnalysisScreen';
 
 
 export default function App() {
@@ -30,6 +31,7 @@ export default function App() {
           <Stack.Screen name="Doctors" component={DoctorsScreen} />
           <Stack.Screen name="Progress" component={MainScreen} />
           <Stack.Screen name="AnalysisMain" component={AnalysisMain} />
+          <Stack.Screen name="SingleAnalysis" component={SingleAnalysisScreen} />
         </Stack.Navigator>
       </NavigationContainer>
       </Provider>

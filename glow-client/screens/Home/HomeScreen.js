@@ -1,4 +1,4 @@
-import { View, Text, Image, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, Image, TouchableOpacity, ScrollView, Linking } from 'react-native';
 import styles from './style';
 import Footer from '../../components/Footer/Footer';
 import * as SecureStore from 'expo-secure-store';
@@ -9,6 +9,7 @@ import SingleAnalysis from '../../components/Analysis/SingleAnalysis.js';
 import { BACKEND_URL } from '@env';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectAnalysis, setAll } from '../../redux/slices/analysis.js';
+import Toast from 'react-native-toast-message';
 
 const HomeScreen = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -45,6 +46,27 @@ const HomeScreen = ({ navigation }) => {
     fetchData();
   }, []);
 
+
+   const formattedDate = (date) => {
+   return new Date(date).toLocaleDateString('en-US', {
+  month: 'long',
+  day: 'numeric',
+})};
+
+
+ const openWP = () => {
+    const WHATSAPP_NUMBER = '15551748531';
+    const MESSAGE = 'Hello, I need some help with my skincare routine!';
+    const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(MESSAGE)}`;
+    Linking.openURL(url)
+      .catch(() => {
+        Toast.show({
+          type: 'error',
+          text1: 'Failed!',
+          text2: 'Failed to open whatsapp'
+        });
+      });
+  }
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.content}>
@@ -72,8 +94,8 @@ const HomeScreen = ({ navigation }) => {
         <TouchableOpacity onPress={() => navigation.navigate('AnalysisMain')} style={styles.button}>
           <Text style={styles.buttonText}>Start Analysis</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.learnMoreButton}>
-          <Text style={styles.learnMoreText}>Learn More</Text>
+        <TouchableOpacity onPress={() => openWP()} style={styles.learnMoreButton}>
+          <Text style={styles.learnMoreText}>AI Assistant</Text>
         </TouchableOpacity>
 
         {reduxAnalysis.length > 0 ? (
@@ -94,10 +116,11 @@ const HomeScreen = ({ navigation }) => {
                 <Text style={styles.sectionTitle}>Recent Analysis</Text>
                 <Feather name="trending-up" size={24} color="#D89250" />
               </View>
-              {reduxAnalysis.map((a, index) => (
+              { reduxAnalysis.slice(0,2).map((a, index) => (
                 <SingleAnalysis
                   key={a.id || index}
-                  title={a.title || `Analysis ${index + 1}`}
+                  id={a.id}
+                  title={a.title || `Analysis - ${formattedDate(a.created_at)}`}
                   dateCreated={a.created_at}
                   score={a?.scores?.general_skin_health_score || 0}
                 />

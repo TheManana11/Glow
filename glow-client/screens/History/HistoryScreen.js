@@ -3,10 +3,12 @@ import { MaterialCommunityIcons, Feather } from "@expo/vector-icons";
 import styles from "./style";
 import { useSelector } from "react-redux";
 import { selectAnalysis } from "../../redux/slices/analysis";
+import { useNavigation } from "@react-navigation/native";
 
 
 const HistoryScreen = () => {
   const analysis = useSelector(selectAnalysis);
+  const navigation = useNavigation();
 
   if (!analysis || analysis.length === 0) {
     return (
@@ -34,7 +36,11 @@ const HistoryScreen = () => {
   return (
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         {analysis.map((item, index) => (
-          <View key={index} style={styles.card}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('SingleAnalysis', { id: item.id })}
+            key={index}
+            style={styles.card}
+          >
             <View style={styles.headerRow}>
               <View style={styles.dateRow}>
                 <Feather name="calendar" size={18} color="#D4A373" />
@@ -74,7 +80,7 @@ const HistoryScreen = () => {
                 </View>
               ))}
             </View>
-          </View>
+          </TouchableOpacity>
         ))}
       </ScrollView>
   );

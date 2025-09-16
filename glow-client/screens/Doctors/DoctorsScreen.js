@@ -20,7 +20,7 @@ const doctors = [
     experience: '12 years of experience',
     location: 'Beirut. Lebanon',
     availability: 'Available today',
-    availabilityColor: 'green',
+    availabilityColor: '',
     phone: '+1 (555) 123-4567',
     email: 'sarah.johnson@clinic.com',
     image: require('../../assets/images/avatar.jpg'),
@@ -29,12 +29,12 @@ const doctors = [
     id: 2,
     name: 'Dr. Robert Milter',
     specialty: 'Cosmetic Dermatology',
-    specialtyColor: '#F5A623',
+    specialtyColor: '#D89250',
     price: '$120',
     experience: '7 years of experience',
     location: 'Beirut. Lebanon',
     availability: 'Next Available: Tomorrow',
-    availabilityColor: 'green',
+    availabilityColor: '',
     phone: '+1 (555) 123-4567',
     email: 'robert.milter@clinic.com',
     image: require('../../assets/images/avatar.jpg'),
@@ -76,22 +76,22 @@ const DoctorsScreen = () => {
             <Text style={styles.text}>{doc.experience}</Text>
 
             <View style={styles.infoRow}>
-              <Entypo name="location-pin" size={18} color="green" />
+              <Entypo name="location-pin" size={18} color="#808080" />
               <Text style={styles.text}>{doc.location}</Text>
             </View>
 
             <View style={styles.infoRow}>
-              <Feather name="calendar" size={16} color={doc.availabilityColor} />
-              <Text style={[styles.text, { color: doc.availabilityColor }]}>{doc.availability}</Text>
+              <Feather name="calendar" size={16} color='#808080' />
+              <Text style={styles.text}>{doc.availability}</Text>
             </View>
 
             <View style={styles.infoRow}>
-              <Feather name="phone" size={16} color="#000" />
+              <Feather name="phone" size={16} color="#808080" />
               <Text style={styles.text}>{doc.phone}</Text>
             </View>
 
             <View style={styles.infoRow}>
-              <Feather name="mail" size={16} color="#000" />
+              <Feather name="mail" size={16} color="#808080" />
               <Text style={styles.text}>{doc.email}</Text>
             </View>
           </View>
