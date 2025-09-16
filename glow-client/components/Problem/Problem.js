@@ -41,16 +41,16 @@ export default function Problem({ item }) {
               <View style={styles.severityContainer}>
                 <Feather name="alert-triangle" size={16} color={severityStyles.iconColor} />
                 <Text style={[styles.severityText, severityStyles.textColor]}>
-                  {item.severity}
+                  {item?.severity}
                 </Text>
               </View>
               <Text style={[styles.confidenceText, severityStyles.textColor]}>
-                {item.confidence}% confident
+                {item?.confidence}% confident
               </Text>
             </View>
 
-            <Text style={styles.problemTitle}>{item.title}</Text>
-            <Text style={styles.problemDescription}>{item.description}</Text>
+            <Text style={styles.problemTitle}>{item?.title}</Text>
+            <Text style={styles.problemDescription}>{item?.description}</Text>
           </View>
     )
 }
