@@ -44,7 +44,7 @@ export class AnalysisService {
     const token = (req.headers as any).authorization;
     const user_id = this.tokenService.getUserIdFromToken(token);
 
-    const image = `https://cdc7513ca4fb.ngrok-free.app/uploads/analysis/${file_name}`;
+    const image = `https://cb2d5c7f5fdb.ngrok-free.app/uploads/analysis/${file_name}`;
     const res = await this.helperService.call_openAI(image);
     const res_final = JSON.parse(res);
 
@@ -75,6 +75,7 @@ export class AnalysisService {
       this.vectorService.saveAnalysisChunks(analysis_save);
       return {
         message: "Analysis done successfully",
+        payload: analysis_save
       };
     } catch (error) {
       this.errorService.InternalServerError(
@@ -87,12 +88,19 @@ export class AnalysisService {
 
   async findAll() {
     const all_analysis = await this.analysisRepository.find();
-    this.errorService.NotFound("No analysis found", !all_analysis);
+    // this.errorService.NotFound("No analysis found", !all_analysis);
+
+  if (!all_analysis || all_analysis.length === 0) {
     return {
-      message: "All analysis fetched successfully",
-      payload: all_analysis,
+      message: "No analysis found",
+      payload: [],
     };
   }
+  return {
+    message: "All analysis fetched successfully",
+    payload: all_analysis,
+  };
+}
 
   async findAllByUser(req: Request) {
     const token = (req.headers as any).authorization;

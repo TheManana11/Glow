@@ -10,14 +10,14 @@ export class SchedulerService {
     private readonly registry: SchedulerRegistry,
   ) {}
 
-  @Cron('20 22 * * *', { timeZone: 'Asia/Beirut', name: 'morningJob', disabled: true })
+  @Cron('50 6 * * *', { timeZone: 'Asia/Beirut', name: 'morningJob', disabled: true })
   async morning() {
     console.log("test");
     
     await this.helpers.webhookMessage(this.phone_number.slice(1), "🌞 Good morning! Remember to start your day with your skincare routine for fresh, healthy skin. 💧 Consistency is key to healthy, glowing skin — your future self will thank you! ✨"); 
   }
 
-  @Cron('30 22 * * *', { timeZone: 'Asia/Beirut', name: 'eveningJob', disabled: true })
+  @Cron('55 6 * * *', { timeZone: 'Asia/Beirut', name: 'eveningJob', disabled: true })
   async evening() {
     console.log("test");
     await this.helpers.webhookMessage(this.phone_number.slice(1), '🌙 Good evening! Take a few minutes to pamper your skin before bedtime. Your skin will thank you.');
