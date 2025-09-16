@@ -47,8 +47,8 @@ export default StyleSheet.create({
     marginTop: 8,
   },
 
-  routineSection: {
-    backgroundColor: '#fff',
+  ineSection: {
+    backroutgroundColor: '#fff',
     borderRadius: 10,
     paddingVertical: 30,
     paddingHorizontal: 15,
