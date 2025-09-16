@@ -39,7 +39,6 @@ export default StyleSheet.create({
     fontWeight: '500',
   },
 
-  // Status colors
   goodStatus: {
     backgroundColor: '#D4F7D4',
     borderColor: '#5CB85C',

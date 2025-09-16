@@ -42,69 +42,6 @@ export default StyleSheet.create({
     color: '#808080',
   },
 
-  /** Problem Card **/
-  problemCard: {
-    borderRadius: 10,
-    padding: 15,
-    marginBottom: 25,
-  },
-  problemHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 10,
-  },
-  severityContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 5,
-  },
-  severityText: {
-    fontSize: 14,
-    fontWeight: '500',
-  },
-  confidenceText: {
-    fontSize: 14,
-    fontWeight: '500',
-  },
-  problemTitle: {
-    fontSize: 18,
-    color: '#D89250',
-    fontWeight: '600',
-    marginBottom: 5,
-  },
-  problemDescription: {
-    fontSize: 16,
-    color: '#808080',
-  },
-
-  /** Dynamic Severity Backgrounds **/
-  mildBackground: {
-    backgroundColor: '#FEF8E7', // Light yellow
-  },
-  moderateBackground: {
-    backgroundColor: '#FCEEE9', // Light orange
-  },
-  severeBackground: {
-    backgroundColor: '#FDECEC', // Light red
-  },
-  defaultBackground: {
-    backgroundColor: '#F0F0F0', // Fallback gray
-  },
-
-  /** Dynamic Severity Text Colors **/
-  mildText: {
-    color: '#E5A029',
-  },
-  moderateText: {
-    color: '#E55D2E',
-  },
-  severeText: {
-    color: '#D92D20',
-  },
-  defaultText: {
-    color: '#808080',
-  },
-
   /** Button **/
   button: {
     backgroundColor: '#D89250',
