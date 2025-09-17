@@ -18,6 +18,7 @@ import { SchedulerModule } from './scheduler/scheduler.module';
 import { VectorModule } from './vector/vector.module';
 import { AnalysisChunk } from "./vector/entities/vector.entity";
 import { LicenseModule } from './license/license.module';
+import { License } from "./license/entities/license.entity";
 
 @Module({
   imports: [
@@ -29,7 +30,7 @@ import { LicenseModule } from './license/license.module';
       username: process.env.DB_USER,
       password: process.env.DB_PASS,
       database: process.env.DB_NAME,
-      entities: [User, Analysis, Doctor, AnalysisChunk],
+      entities: [User, Analysis, Doctor, AnalysisChunk, License],
       synchronize: true,
     }),
     ThrottlerModule.forRoot(THROTTLE_CONFIG),
