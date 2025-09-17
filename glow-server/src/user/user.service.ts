@@ -12,6 +12,7 @@ import { LoginDto } from "./dto/login.dto";
 import { JwtService } from "@nestjs/jwt";
 import { HelpersService } from "src/helpers/helpers.service";
 import { ErrorService } from "src/helpers/errors.service";
+import axios from "axios";
 
 
 @Injectable()
@@ -40,6 +41,26 @@ export class UserService {
 
     const token = await this.jwtService.signAsync({ id: user.id, first_name: user.first_name, role: user.role });
     const { password, ...rest } = user;
+
+
+    // webhook to n8n
+    if(user.role === 'doctor'){
+      try {
+        const response = await axios.post('http://host.docker.internal:5678/webhook-test/get-email',
+          {user: rest},
+          {
+            headers: { 'Content-Type': 'application/json' }
+          }
+        );
+        console.log('====================================');
+        console.log(response);
+        console.log('====================================');
+      } catch (error) {
+        console.log('====================================');
+        console.log(error);
+        console.log('====================================');
+      }
+    }
     return {
       message: "User created successfully",
       payload: rest,
