@@ -17,6 +17,7 @@ import { ScheduleModule } from '@nestjs/schedule'
 import { SchedulerModule } from './scheduler/scheduler.module';
 import { VectorModule } from './vector/vector.module';
 import { AnalysisChunk } from "./vector/entities/vector.entity";
+import { LicenseModule } from './license/license.module';
 
 @Module({
   imports: [
@@ -41,6 +42,7 @@ import { AnalysisChunk } from "./vector/entities/vector.entity";
     DoctorModule,
     SchedulerModule,
     VectorModule,
+    LicenseModule,
   ],
   providers: [ { provide: APP_GUARD, useClass: ThrottlerGuard } ],
 })

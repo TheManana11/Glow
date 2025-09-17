@@ -9,15 +9,23 @@ import {
   Length,
   Max,
   Min,
+  IsUUID,
 } from 'class-validator';
 import { Type } from 'class-transformer';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {
   DermatologySpecialty,
-  DoctorAvailability,
 } from '../../doctor/entities/doctor.entity';
 
 export class CreateDoctorDto {
+  @ApiProperty({
+    description: 'User ID linked to this doctor (UUID)',
+    example: 'b2f25d92-5f4b-4eab-9bc9-9d2bdfd453e1',
+  })
+  @IsUUID()
+  @IsNotEmpty()
+  user_id: string;
+
   @ApiProperty({
     description: 'Medical specialty (dermatology subspecialty)',
     enum: DermatologySpecialty,
@@ -41,13 +49,10 @@ export class CreateDoctorDto {
 
   @ApiPropertyOptional({
     description: 'Doctor’s earliest availability',
-    enum: DoctorAvailability,
-    enumName: 'DoctorAvailability',
-    example: DoctorAvailability.THURSDAY,
+    example: 'Mon-Fri',
   })
-  @IsOptional()
-  @IsEnum(DoctorAvailability)
-  availability?: DoctorAvailability;
+  @IsString()
+  availability: string;
 
   @ApiProperty({
     description: 'Price per session (2 decimal places)',
@@ -71,20 +76,12 @@ export class CreateDoctorDto {
   location: string;
 
   @ApiProperty({
-    description: 'URL to national ID image',
-    example: 'https://cdn.example.com/docs/national-id-123.jpg',
+    description: 'Medical license number',
+    example: '134/ا',
   })
   @IsString()
   @IsNotEmpty()
-  national_id_image_url: string;
-
-  @ApiProperty({
-    description: 'URL to medical license image',
-    example: 'https://cdn.example.com/docs/license-123.jpg',
-  })
-  @IsString()
-  @IsNotEmpty()
-  medical_license_image_url: string;
+  medical_license_number: string;
 
   @ApiPropertyOptional({
     description: 'Verification flag (usually set by admins)',

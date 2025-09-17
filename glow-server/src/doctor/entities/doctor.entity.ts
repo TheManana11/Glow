@@ -35,16 +35,6 @@ export enum DermatologySpecialty {
   ALLERGY_CONTACT_DERMATITIS = "allergy_contact_dermatitis",
 }
 
-export enum DoctorAvailability {
-  TODAY = "today",
-  TOMORROW = "tomorrow",
-  MONDAY = "monday",
-  TUESDAY = "tuesday",
-  WEDNESDAY = "wednesday",
-  THURSDAY = "thursday",
-  FRIDAY = "friday",
-}
-
 @Entity("doctors")
 export class Doctor {
   @PrimaryGeneratedColumn("uuid")
@@ -72,12 +62,12 @@ export class Doctor {
   years_experience: number;
 
   @Column({
-    type: "enum",
-    enum: DoctorAvailability,
-    default: DoctorAvailability.TODAY,
+    type: "varchar",
   })
-  @IsEnum(DoctorAvailability)
-  availability: DoctorAvailability;
+  @IsString()
+  @IsNotEmpty()
+  @Length(2, 200)
+  availability: string;
 
   @Column({ type: "numeric", precision: 10, scale: 2 })
   @IsNumber({ maxDecimalPlaces: 2 })
@@ -90,11 +80,8 @@ export class Doctor {
   @Length(2, 200)
   location: string;
 
-  @Column({ type: "text" })
-  national_id_image_url: string;
-
-  @Column({ type: "text" })
-  medical_license_image_url: string;
+  @Column({ type: "varchar" })
+  medical_license_number: string;
 
   @Column({ type: "boolean", default: false })
   @IsBoolean()

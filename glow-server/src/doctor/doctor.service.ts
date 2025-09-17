@@ -19,38 +19,24 @@ export class DoctorService {
   ) {}
 
   async create(createDoctorDto: CreateDoctorDto, req: Request) {
-    const token = (req.headers as any).authorization;
-    const user_id = this.tokenService.getUserIdFromToken(token);
-
-    const national_id_image = await this.helperService.base64ToImage(
-      createDoctorDto.national_id_image_url,
-      "national-IDs",
-    );
-    const medical_license_image = await this.helperService.base64ToImage(
-      createDoctorDto.medical_license_image_url,
-      "medical-license",
-    );
-
-    this.errorService.BadRequest(
-      "Please make sure image is not corrupted and of type: png, jpeg, jpg, webp",
-      !national_id_image || !medical_license_image,
-    );
+    // const token = (req.headers as any).authorization;
+    // const user_id = this.tokenService.getUserIdFromToken(token);
 
     const doctor_obj = this.doctorRepository.create({
       specialty: createDoctorDto.specialty,
-      user: { id: user_id },
+      user: { id: createDoctorDto.user_id },
       years_experience: createDoctorDto.years_experience,
       availability: createDoctorDto.availability,
       price_per_session: createDoctorDto.price_per_session,
       location: createDoctorDto.location,
-      national_id_image_url: `uploads/national-IDs/${national_id_image}`,
-      medical_license_image_url: `uploads/medical-license/${medical_license_image}`,
+      medical_license_number: createDoctorDto.medical_license_number,
+      verified: true
     });
 
     try {
       const doctor = await this.doctorRepository.save(doctor_obj);
       return {
-        message: "Doctor added successfully, waiting for the verification",
+        message: "Doctor added successfully",
         payload: doctor,
       };
     } catch (error) {
