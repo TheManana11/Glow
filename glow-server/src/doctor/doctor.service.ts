@@ -48,7 +48,11 @@ export class DoctorService {
   }
 
   async findAll() {
-      const doctors = await this.doctorRepository.findBy({ verified: true });
+      const doctors = await this.doctorRepository.find({
+    where: { verified: true },
+    relations: ['user'],
+    order: {created_at: 'DESC' }
+  });
       this.errorService.NotFound("No doctors in the app right now", !doctors || doctors.length === 0);
 
       return {

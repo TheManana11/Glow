@@ -7,8 +7,8 @@ import { UpdateLicenseDto } from './dto/update-license.dto';
 export class LicenseController {
   constructor(private readonly licenseService: LicenseService) {}
 
-  @Get(':license_num')
-  async getLicense(@Param('license_num') license_num: string) {
-    return this.licenseService.findAll(license_num);
+  @Post()
+  async getLicense(@Body() body: any) {
+    return this.licenseService.findAll(body);
   }
 }

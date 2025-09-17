@@ -46,7 +46,7 @@ export class UserService {
     // webhook to n8n
     if(user.role === 'doctor'){
       try {
-        const response = await axios.post('http://host.docker.internal:5678/webhook-test/get-email',
+        const response = await axios.post('http://host.docker.internal:5678/webhook/get-email',
           {user: rest},
           {
             headers: { 'Content-Type': 'application/json' }

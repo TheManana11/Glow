@@ -24,15 +24,15 @@ import {
 import { User } from "src/user/entities/user.entity";
 
 export enum DermatologySpecialty {
-  GENERAL_DERMATOLOGY = "general_dermatology",
-  COSMETIC_DERMATOLOGY = "cosmetic_dermatology",
-  PEDIATRIC_DERMATOLOGY = "pediatric_dermatology",
-  DERMATOPATHOLOGY = "dermatopathology",
-  MOHS_SURGERY = "mohs_surgery",
-  TRICHOLOGY = "trichology",
-  AESTHETIC_DERMATOLOGY = "aesthetic_dermatology",
-  IMMUNODERMATOLOGY = "immunodermatology",
-  ALLERGY_CONTACT_DERMATITIS = "allergy_contact_dermatitis",
+  GENERAL_DERMATOLOGY = "General Dermatology",
+  COSMETIC_DERMATOLOGY = "Cosmetic Dermatology",
+  PEDIATRIC_DERMATOLOGY = "Pediatric Dermatology",
+  DERMATOPATHOLOGY = "Dermatopathology",
+  MOHS_SURGERY = "Mohs Surgery",
+  TRICHOLOGY = "Trichology",
+  AESTHETIC_DERMATOLOGY = "Aesthetic Dermatology",
+  IMMUNODERMATOLOGY = "Immunodermatology",
+  ALLERGY_CONTACT_DERMATITIS = "Allergy Contact Dermatitis",
 }
 
 @Entity("doctors")
@@ -41,8 +41,8 @@ export class Doctor {
   id: string;
 
 
-  @OneToOne(() => User, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'user_id' }) 
+  @OneToOne(() => User, (user) => user.doctor, { onDelete: "CASCADE", eager: false })
+  @JoinColumn({ name: "user_id" })
   user: User;
 
   @RelationId((doctor: Doctor) => doctor.user)

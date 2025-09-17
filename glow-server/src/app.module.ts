@@ -7,7 +7,7 @@ import { User } from './user/entities/user.entity'
 import { AnalysisModule } from './analysis/analysis.module';
 import { Analysis } from "./analysis/entities/analysis.entity";
 import { HelpersModule } from './helpers/helpers.module';
-import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler'
+// import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler'
 import { APP_GUARD } from "@nestjs/core";
 import { ENV_CONFIG, THROTTLE_CONFIG } from "./config";
 import { CacheModule } from '@nestjs/cache-manager'
@@ -33,7 +33,7 @@ import { License } from "./license/entities/license.entity";
       entities: [User, Analysis, Doctor, AnalysisChunk, License],
       synchronize: true,
     }),
-    ThrottlerModule.forRoot(THROTTLE_CONFIG),
+    // ThrottlerModule.forRoot(THROTTLE_CONFIG),
     CacheModule.register({ isGlobal: true }),
     ScheduleModule.forRoot(),
     ChatModule,
@@ -45,6 +45,6 @@ import { License } from "./license/entities/license.entity";
     VectorModule,
     LicenseModule,
   ],
-  providers: [ { provide: APP_GUARD, useClass: ThrottlerGuard } ],
+  // providers: [ { provide: APP_GUARD, useClass: ThrottlerGuard } ],
 })
 export class AppModule {}
