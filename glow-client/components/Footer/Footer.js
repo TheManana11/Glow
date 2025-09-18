@@ -32,13 +32,8 @@ const Footer = () => {
   const handleProfileNavigation = () => {
     if (!user) return;
 
-    if (user.role === 'patient') {
+   
       navigation.navigate('Profile');
-    } else if (user.role === 'doctor') {
-      navigation.navigate('DoctorProfile');
-    } else {
-      console.warn('Unknown role:', user.role);
-    }
   };
 
   // Helper to determine if tab is active
