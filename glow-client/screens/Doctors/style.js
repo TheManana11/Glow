@@ -70,6 +70,7 @@ const styles = StyleSheet.create({
   specialty: {
     fontSize: 13,
     marginTop: 2,
+    color: '#D89250'
   },
   priceContainer: {
     alignItems: 'flex-end',
