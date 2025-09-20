@@ -14,6 +14,10 @@ import MainScreen from './screens/Progress/MainScreen'
 import AnalysisMain from './screens/AnalysisMain/AnalysisMain'
 import SingleAnalysisScreen from './screens/SingleAnalysis/SingleAnalysisScreen';
 
+import DoctorHomeScreen from "./screens/DoctorHome/HomeScreen";
+import ChatsScreen from "./screens/Chats/ChatsScreen";
+
+
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -32,6 +36,9 @@ export default function App() {
           <Stack.Screen name="Progress" component={MainScreen} />
           <Stack.Screen name="AnalysisMain" component={AnalysisMain} />
           <Stack.Screen name="SingleAnalysis" component={SingleAnalysisScreen} />
+
+          <Stack.Screen name="DoctorHome" component={DoctorHomeScreen} />
+          <Stack.Screen name="Chats" component={ChatsScreen} />
         </Stack.Navigator>
       </NavigationContainer>
       </Provider>

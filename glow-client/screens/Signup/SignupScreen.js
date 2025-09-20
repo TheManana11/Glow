@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -13,8 +13,12 @@ import axios from "axios";
 import * as SecureStore from 'expo-secure-store';
 import { BACKEND_URL } from '@env'
 import Toast from 'react-native-toast-message';
+import Verification from '../../components/Verification/Verification'
 
 export default function SignupScreen({ navigation }) {
+
+  const [message, setMessage] = useState(false);
+
   const [formData, setFormData] = useState({
     first_name: "",
     last_name: "",
@@ -34,24 +38,42 @@ export default function SignupScreen({ navigation }) {
 
     const token = response.data.token;
     const user = response.data.payload;
-    await SecureStore.setItemAsync('token', token);
-    await SecureStore.setItemAsync('user', JSON.stringify(user));
 
-    setFormData({
-      first_name: "",
-      last_name: "",
-      email: "",
-      age: "",
-      phone_number: "",
-      password: "",
-      role: "",
-    });
-    Toast.show({
-      type: 'success',
-      text1: 'Success!',
-      text2: 'Registered successfully',
-    });
-    navigation.navigate('Home');
+    if(user.role === 'doctor'){
+      // const doctor_resposne = await axios.post(`${BACKEND_URL}/doctor/user-id`, { id: user.id }, {
+      //   headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, 
+      // });
+      setMessage(true);
+       setFormData({
+        first_name: "",
+        last_name: "",
+        email: "",
+        age: "",
+        phone_number: "",
+        password: "",
+        role: "",
+      });
+    }else{
+      await SecureStore.setItemAsync('token', token);
+      await SecureStore.setItemAsync('user', JSON.stringify(user));
+  
+      setFormData({
+        first_name: "",
+        last_name: "",
+        email: "",
+        age: "",
+        phone_number: "",
+        password: "",
+        role: "",
+      });
+      Toast.show({
+        type: 'success',
+        text1: 'Success!',
+        text2: 'Registered successfully',
+      });
+        navigation.navigate('Home');
+    }
+
     } catch (error) {
        Toast.show({
       type: 'error',
@@ -61,6 +83,18 @@ export default function SignupScreen({ navigation }) {
     }
   }
 
+  useEffect(() => {
+    let timer;
+    if (message) {
+      timer = setTimeout(() => {
+        setMessage(false);
+      }, 5000); // 5 seconds
+    }
+
+    return () => clearTimeout(timer);
+  }, [message]);
+
+  if(message) return <Verification />
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Image
