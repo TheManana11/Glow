@@ -28,16 +28,13 @@ export class DoctorController {
   @Get(':id')
   @HttpCode(200)
   findOne(@Param('id') id: string) {
-    return this.doctorService.findOne(+id);
+    return this.doctorService.findOne(id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateDoctorDto: UpdateDoctorDto) {
-    return this.doctorService.update(+id, updateDoctorDto);
-  }
+@Post('/user-id')
+@HttpCode(200)
+findOneByUser(@Body() body: { id: string }) {
+  return this.doctorService.findOneByUser(body);
+}
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.doctorService.remove(+id);
-  }
 }

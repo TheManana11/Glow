@@ -48,7 +48,7 @@ export class DoctorService {
   }
 
   async findAll() {
-      const doctors = await this.doctorRepository.find({
+    const doctors = await this.doctorRepository.find({
     where: { verified: true },
     relations: ['user'],
     order: {created_at: 'DESC' }
@@ -61,15 +61,38 @@ export class DoctorService {
       };
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} doctor`;
+  async findOne(id: string) {
+    const doctor = await this.doctorRepository.findOneBy({ id });
+      this.errorService.NotFound("No doctor found with this id right now", !doctor);
+
+      return {
+        message: "Doctor fetched successfully",
+        payload: doctor,
+      };
+  }
+  async findOneByUser({ id }: { id: string }) {
+  console.log('Searching for doctor with user_id:', id);
+
+  const doctor = await this.doctorRepository.findOne({
+  where: {
+    user: {
+      id: id, 
+    },
+  },
+  relations: ['user'], 
+});
+
+
+  if (!doctor) {
+    return {
+       message: "Doctor not found",
+    }
   }
 
-  update(id: number, updateDoctorDto: UpdateDoctorDto) {
-    return `This action updates a #${id} doctor`;
-  }
+  return {
+    message: "Doctor fetched successfully",
+    payload: doctor,
+  };
+}
 
-  remove(id: number) {
-    return `This action removes a #${id} doctor`;
-  }
 }
