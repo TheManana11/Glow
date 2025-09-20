@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -14,47 +14,80 @@ import * as SecureStore from 'expo-secure-store';
 import { useNavigation } from "@react-navigation/native";
 import { BACKEND_URL } from '@env'
 import Toast from 'react-native-toast-message';
+import Verification from '../../components/Verification/Verification'
 
 export default function SignupScreen({ navigation }) {
+  const [message, setMessage] = useState(false);
+  
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
 
   const handleSubmit = async () => {
-    try {
-    const response = await axios.post(`${BACKEND_URL}/users/login`, formData,{
-      headers: { 'Content-Type': 'application/json',
-       },
-       timeout: 10000, 
-    });
+  // 1. Login request
+  const response = await axios.post(`${BACKEND_URL}/users/login`, formData, {
+    headers: { 'Content-Type': 'application/json' },
+    timeout: 10000,
+  });
 
-    const token = response.data.token;
-    const user = response.data.payload;
-    await SecureStore.setItemAsync('token', token);
-    await SecureStore.setItemAsync('user', JSON.stringify(user));
+  const token = response.data.token;
+  const user = response.data.payload;
 
-    setFormData({
-      email: "",
-      password: ""
-    });
-    Toast.show({
-      type: 'success',
-      text1: 'Success!',
-      text2: 'Logged in successfully',
-    });
-    navigation.navigate('Home')
-    } catch (error) {
-       Toast.show({
-      type: 'error',
-      text1: 'Error!',
-      text2: error.response.data.message,
-    });
-    console.log('====================================');
-    console.log(error.response);
-    console.log('====================================');
+  // 2. If role is doctor, check doctor record
+  if (user.role === 'doctor') {
+    const doctor_response = await axios.post(
+      `${BACKEND_URL}/doctor/user-id`,
+      { id: user.id },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+      }
+    );
+
+    if (!doctor_response.data.payload) {
+      setMessage(true);
+      setFormData({
+    email: "",
+    password: "",
+  });
+      return; 
+    }
   }
-  };
+
+  // 3. If doctor exists or user is patient, continue login
+  await SecureStore.setItemAsync('token', token);
+  await SecureStore.setItemAsync('user', JSON.stringify(user));
+
+  setFormData({ email: "", password: "" });
+
+  Toast.show({
+    type: 'success',
+    text1: 'Success!',
+    text2: 'Logged in successfully',
+  });
+
+  navigation.navigate(user.role === 'doctor' ? 'DoctorHome' : 'Home');
+};
+
+
+
+
+    useEffect(() => {
+  if (!message) return;
+
+  const timer = setTimeout(() => {
+    setMessage(false); // hide verification after 5 sec
+  }, 5000);
+
+  return () => clearTimeout(timer); // cleanup
+}, [message]);
+
+
+  
+  if(message) return <Verification />
 
 
   return (
