@@ -5,19 +5,23 @@
 <!-- project overview -->
 <img src="./readme/title2.svg"/>
 
-> Skinalyze is a mobile application that empowers users to understand and care for their skin through AI and machine learning. By analyzing selfies, the app detects skin conditions (acne, dryness, pigmentation, redness, etc.), assesses stress levels from facial cues, and provides tailored skincare and sun protection recommendations.
+> Glow is an AI-powered skincare mobile application designed to help users understand, improve, and care for their skin with ease. By analyzing selfies, Glow detects common skin concerns such as acne, dryness, pigmentation, and redness, then generates personalized skincare plans and tailored product recommendations based on each user's unique skin profile.
 > 
-> Using weather integration and automated reminders, it supports users in building consistent skincare routines, tracking improvements over time, and maintaining healthy skin.
+> To make skincare guidance more accessible, Glow integrates with WhatsApp, where users can interact with an AI assistant for instant support. This assistant can answer questions about their analysis, suggest products, provide skincare tips, and help address any skin-related concerns in real-time.
+> 
+> Glow also tracks progress over time, helping users stay consistent and see measurable improvements. With its combination of advanced AI technology and smart reminders. Glow makes personalized skincare guidance simple, professional, and always within reach.
 
 <br><br>
 
 <!-- System Design -->
 <img src="./readme/title3.svg"/>
 
-### Add Title Here
+### Entity Relation Diagram
+<img src="./readme/entity relation diagram.png"/>
+<br><br>
 
-- To be decided on later on.
-
+### System Architecture
+<img src="./readme/arch.png"/>
 <br><br>
 
 <!-- Project Highlights -->
@@ -25,9 +29,9 @@
 
 ### Sexy features
 
-- ML models analyze your facial image to detect skin problems and assess emotional stress instantly.
-- AI recommends skincare products and sun protection based on skin type and the current weather.
-- Using n8n automation, the app sends care reminders, tracks skin changes over time, and logs your routine.
+- Smart AI skincare assistant: An advanced AI agent provides personalized recommendations, answers your questions, and offers guidance on overall skin health and concerns.
+- Seamless WhatsApp integration: Users can chat directly with the AI through WhatsApp to get instant skincare advice, routine reminders, and progress updates.
+- Dynamic automation with n8n: Automated workflows that validate and verify doctors.
   
 <br><br>
 
