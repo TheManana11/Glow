@@ -20,6 +20,7 @@ const DoctorsScreen = () => {
   const [doctors, setDoctors] = useState([]);
   const fetchDoctors = async () => {
     const token = await SecureStore.getItemAsync('token');
+    if(!token) console.log("No token available", token);
     try {
       const response = await axios.get(`${BACKEND_URL}/doctor`, {
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }
@@ -28,12 +29,12 @@ const DoctorsScreen = () => {
       console.log(response.data.payload);
     } catch (error) {
       console.log('====================================');
-      console.log(error);
+      console.log("error", error);
       console.log('====================================');
       Toast.show({
         type: 'error',
         text1: 'Failed',
-        text2: 'Failed to fetch doctors',
+        text2: 'Failed to fetch doctorssss',
       });
     }
   }
