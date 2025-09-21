@@ -1,0 +1,105 @@
+version: "3.9"
+
+services:
+  # ======================================
+  # n8n Automation Service
+  # ======================================
+  n8n:
+    image: n8nio/n8n
+    container_name: glow-n8n
+    restart: always
+    ports:
+      - "5678:5678"
+    networks:
+      - mynetwork
+    environment:
+      # Optional: Configure n8n base URL and timezone
+      N8N_BASIC_AUTH_ACTIVE: "true"
+      N8N_BASIC_AUTH_USER: "admin"
+      N8N_BASIC_AUTH_PASSWORD: "admin123"
+      GENERIC_TIMEZONE: "UTC"
+      WEBHOOK_TUNNEL_URL: "http://localhost:5678"
+    volumes:
+      - n8n_data:/home/node/.n8n
+
+  # ======================================
+  # Backend (NestJS)
+  # ======================================
+  backend:
+    build:
+      context: ./glow-server
+      dockerfile: Dockerfile
+    container_name: glow-backend
+    restart: always
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+      - n8n
+    environment:
+      # Database connection
+      DATABASE_HOST: db
+      DATABASE_PORT: 5432
+      DATABASE_USER: postgres
+      DATABASE_PASSWORD: password
+      DATABASE_NAME: glow_db
+
+      # Optional environment variables for backend
+      NODE_ENV: development
+      N8N_WEBHOOK_URL: http://n8n:5678/webhook/get-email
+
+    volumes:
+      - ./glow-server:/usr/src/app
+      - /usr/src/app/node_modules
+
+    networks:
+      - mynetwork
+
+  # ======================================
+  # PostgreSQL Database
+  # ======================================
+  db:
+    image: pgvector/pgvector:pg17
+    container_name: glow-db
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: glow_db
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    networks:
+      - mynetwork
+
+  # ======================================
+  # pgAdmin (Database Management Tool)
+  # ======================================
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: glow-pgadmin
+    restart: always
+    ports:
+      - "5050:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    depends_on:
+      - db
+    networks:
+      - mynetwork
+
+# ======================================
+# Volumes for persistent data
+# ======================================
+volumes:
+  pg_data:
+  n8n_data:
+
+# ======================================
+# Shared Network for All Services
+# ======================================
+networks:
+  mynetwork:
+    driver: bridge
