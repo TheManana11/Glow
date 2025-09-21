@@ -1,0 +1,167 @@
+import { Inject, Injectable } from "@nestjs/common";
+import { CreateAnalysisDto } from "./dto/create-analysis.dto";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
+import { Analysis } from "./entities/analysis.entity";
+import { TokenService } from "./token.service";
+import { User } from "src/user/entities/user.entity";
+import { HelpersService } from "src/helpers/helpers.service";
+import { ErrorService } from "src/helpers/errors.service";
+import { CACHE_MANAGER, Cache } from "@nestjs/cache-manager";
+import { SchedulerService } from "src/scheduler/scheduler.service";
+import { VectorService } from "src/vector/vector.service";
+import { UserService } from "src/user/user.service";
+
+@Injectable()
+export class AnalysisService {
+  constructor(
+    @InjectRepository(Analysis)
+    private analysisRepository: Repository<Analysis>,
+
+    @InjectRepository(User)
+    private userRepository: Repository<User>,
+
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
+
+    private tokenService: TokenService,
+    private helperService: HelpersService,
+    private errorService: ErrorService,
+    private schedulerService: SchedulerService,
+    private userService: UserService,
+    private vectorService: VectorService
+  ) {}
+
+  async create(req: Request, createAnalysisDto: CreateAnalysisDto) {
+    const file_name = await this.helperService.base64ToImage(
+      createAnalysisDto.image_url,
+      "analysis",
+    );
+    this.errorService.BadRequest(
+      "Image is corrupted or image type  is invalid, valid types are png, jpg, jpeg, webp",
+      !file_name,
+    );
+
+    const token = (req.headers as any).authorization;
+    const user_id = this.tokenService.getUserIdFromToken(token);
+
+    const image = `https://76fa7983afaf.ngrok-free.app/uploads/analysis/${file_name}`;
+    const res = await this.helperService.call_openAI(image);
+    const res_final = JSON.parse(res);
+
+    const analysis_object = this.analysisRepository.create({
+      user: { id: user_id },
+      image_url: `uploads/analysis/${file_name}`,
+      problems: res_final.problems,
+      goals: res_final.goals,
+      skin_care_routine: res_final.skin_care_routine,
+      scores: res_final.scores,
+      estimated_days_progress: res_final.estimated_days_progress,
+    });
+
+    try {
+      const analysis_save = await this.analysisRepository.save(analysis_object);
+      await this.cacheManager.clear();
+
+
+      try {
+      const user = await this.userService.findOne(user_id);
+      this.schedulerService.resumeDailyReminders(user.payload?.phone_number);
+    } catch (error) {
+      console.log('====================================');
+      console.log(error);
+      console.log('====================================');
+    }
+    
+      this.vectorService.saveAnalysisChunks(analysis_save);
+      return {
+        message: "Analysis done successfully",
+        payload: analysis_save
+      };
+    } catch (error) {
+      this.errorService.InternalServerError(
+        "Server Error, please try again later",
+        error,
+      );
+      console.log("error", error);
+    }
+  }
+
+  async findAll() {
+    const all_analysis = await this.analysisRepository.find();
+    // this.errorService.NotFound("No analysis found", !all_analysis);
+
+  if (!all_analysis || all_analysis.length === 0) {
+    return {
+      message: "No analysis found",
+      payload: [],
+    };
+  }
+  return {
+    message: "All analysis fetched successfully",
+    payload: all_analysis,
+  };
+}
+
+  async findAllByUser(req: Request) {
+    const token = (req.headers as any).authorization;
+    const user_id = this.tokenService.getUserIdFromToken(token);
+    const user = await this.userRepository.findOneBy({ id: user_id });
+
+    this.errorService.NotFound("User not found", !user);
+
+    const cache_analysis = await this.cacheManager.get(`all-user-analysis:${user_id}`);
+    if (cache_analysis) {
+      console.log('Cache HIT!!!');
+      
+      return {
+        message: `All Analysis for user ${user?.first_name} fetched successfully`,
+        payload: cache_analysis,
+      };
+    }
+
+    console.log('Cache MISS!!!');
+    const analysis = await this.analysisRepository.find({
+      where: { user_id },
+      order: { created_at: "DESC" },
+    });
+    this.errorService.NotFound("No analysis found", !analysis || analysis.length === 0);
+    await this.cacheManager.set(`all-user-analysis:${user_id}`, analysis, 0);
+
+    return {
+      message: `All Analysis for user ${user?.first_name} fetched successfully`,
+      payload: analysis,
+    };
+  }
+
+  async findOne(id: string) {
+    const analysis = await this.analysisRepository.findOneBy({ id });
+    this.errorService.NotFound("No analysis found", !analysis);
+
+    return {
+      message: `Analysis with id ${id} fetched successfully`,
+      payload: analysis,
+    };
+  }
+
+  async findByUser(req: Request) {
+    const token = (req.headers as any).authorization;
+    const user_id = this.tokenService.getUserIdFromToken(token);
+    const user = await this.userRepository.findOneBy({ id: user_id });
+
+    this.errorService.NotFound("USer not found", !user);
+
+    const analysis = await this.analysisRepository.findOne({
+      where: { user_id },
+      order: { created_at: "DESC" },
+    });
+
+    this.errorService.NotFound(
+      "No analysis with for this user found",
+      !analysis,
+    );
+    return {
+      message: `Analysis for user ${user?.first_name} fetched successfully`,
+      payload: analysis,
+    };
+  }
+}
