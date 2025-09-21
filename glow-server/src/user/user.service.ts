@@ -107,7 +107,7 @@ export class UserService {
 
   async update(id: string, updateUserDto: UpdateUserDto) {
     await this.userRepository.update(id, updateUserDto);
-    const updated_user = this.userRepository.findOneBy({ id });
+    const updated_user = await this.userRepository.findOneBy({ id });
     return {
       message: `User with id ${id} updated successfully`,
       payload: updated_user,

@@ -22,9 +22,9 @@ export class ChatController {
   }
 
   @Post()
-  receive(@Body() body: any) {
+  async receive(@Body() body: any) {
     try {
-      const response = this.chatService.chat(body);
+      const response = await this.chatService.chat(body);
       return { response };
     } catch (error) {
       return { message: 'Error', Error: error.message };
