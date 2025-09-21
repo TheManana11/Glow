@@ -49,18 +49,20 @@
 | ![Landing](./readme/demo/analysis.jpeg) | ![fsdaf](./readme/demo/doctors.jpeg) | ![fsdaf](./readme/demo/overview.jpeg) |
 
 
-| History screen                            | Profile screen                       | Home screen after analysis screen                       |
+| History screen                            | Profile screen                       | Home screen after analysis                        |
 | --------------------------------------- | ------------------------------------- | ------------------------------------- |
 | ![Landing](./readme/demo/history.jpeg) | ![fsdaf](./readme/demo/profile.jpeg) | ![fsdaf](./readme/demo/home2.jpeg) |
 
 
 
-| Overview screen after analysis                            | History screen after analysis                     |
+| Overview screen after analysis                            | History screen after analysis                      | Overview screen screen                       |
 | --------------------------------------- | ------------------------------------- | ------------------------------------- |
-| ![Landing](./readme/demo/overview.jpeg) | ![fsdaf](./readme/demo/history2.jpeg) |
+| ![Landing](./readme/demo/overview.jpeg) | ![fsdaf](./readme/demo/history2.jpeg) | ![fsdaf](./readme/demo/overview.jpeg) |
 
 
-<!-- | Login screen                            | Register screen                       |
+<!-- ### Admin Screens (Web)
+
+| Login screen                            | Register screen                       |
 | --------------------------------------- | ------------------------------------- |
 | ![Landing](./readme/demo/1440x1024.png) | ![fsdaf](./readme/demo/1440x1024.png) | -->
 
