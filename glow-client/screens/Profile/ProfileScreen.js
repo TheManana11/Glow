@@ -147,7 +147,7 @@ export default function ProfileScreen({ navigation }) {
       <ScrollView contentContainerStyle={styles.content}>
         <View style={styles.profileCard}>
           <Image
-            source={profileImage ? profileImage : require('../../assets/images/profile.png')}
+            source={profileImage ? profileImage : require('../../assets/images/profile.jpeg')}
             style={styles.avatar}
           />
           <Text style={styles.name}>

@@ -72,7 +72,7 @@ const HomeScreen = ({ navigation }) => {
       <ScrollView contentContainerStyle={styles.content}>
         <View style={styles.header}>
           <Image
-            source={user.image_url ? { uri: `${BACKEND_URL}/${user.image_url}` } : require('../../assets/images/profile.png')}
+            source={user.image_url ? { uri: `${BACKEND_URL}/${user.image_url}` } : require('../../assets/images/profile.jpeg')}
             style={styles.avatar}
             resizeMode="cover"
           />
