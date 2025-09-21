@@ -55,9 +55,9 @@
 
 
 
-| Overview screen after analysis                            | History screen after analysis                      | Overview screen screen                       |
+| Overview screen after analysis                            | History screen after analysis                      |                        |
 | --------------------------------------- | ------------------------------------- | ------------------------------------- |
-| ![Landing](./readme/demo/overview.jpeg) | ![fsdaf](./readme/demo/history2.jpeg) | ![fsdaf](./readme/demo/overview.jpeg) |
+| ![Landing](./readme/demo/overview.jpeg) | ![fsdaf](./readme/demo/history2.jpeg) | ![fsdaf](./readme/demo/1440x1024.png) |
 
 
 <!-- ### Admin Screens (Web)
