@@ -106,18 +106,28 @@
 | ![Landing](./readme/demo/service.png) | ![fsdaf](./readme/demo/validation.png) | ![fsdaf](./readme/demo/tests.png) |
 
 
+
+| Postman API 1                            | Postman API 2                       | Postman API 3                        |
+| --------------------------------------- | ------------------------------------- | ------------------------------------- |
+| ![Landing](./readme/demo/1440x1024.png) | ![fsdaf](./readme/demo/1440x1024.png) | ![fsdaf](./readme/demo/1440x1024.png) |
+
 <br><br>
 
 <!-- Deployment -->
 <img src="./readme/title7.svg"/>
 
-### Add Title Here
+### Development → Deployment Flow
 
-- Description here.
+- The development process begins by creating a local branch for each new feature. This allows developers to work on features in isolation without affecting the main codebase. Once progress is made, the branch is pushed to its corresponding remote branch on GitHub, ensuring proper version control and collaboration with the team.
 
+- When the feature is ready for integration, the remote branch is merged into the staging branch. This action automatically triggers GitHub Actions workflows, initiating the continuous integration (CI) process to validate the changes before deployment.
 
-| Postman API 1                            | Postman API 2                       | Postman API 3                        |
-| --------------------------------------- | ------------------------------------- | ------------------------------------- |
-| ![Landing](./readme/demo/1440x1024.png) | ![fsdaf](./readme/demo/1440x1024.png) | ![fsdaf](./readme/demo/1440x1024.png) |
+- During the CI process, GitHub Actions provisions a temporary PostgreSQL database specifically for testing purposes. It then runs Prisma migrations, executes automated tests, and boots the NestJS backend in a test environment. If all tests and checks pass successfully, the pipeline moves forward to the deployment stage.
+
+- Next, GitHub Actions deploys the latest code to the staging EC2 instance. A deployment script is executed to build Docker containers for the NestJS backend, React Native frontend, and PostgreSQL database. These containers are then launched to serve the staging environment, allowing the team to test and review the new features in a production-like setting.
+
+- Finally, once the feature is fully tested and approved, the staging branch is merged into the main branch. This triggers GitHub Actions to rerun the same pipeline steps, but this time the deployment targets the production EC2 instance, making the new feature live for end users.
+
+<img src="./readme/demo/deployment.jpeg"/>
 
 <br><br>
