@@ -29,9 +29,12 @@
 
 ### Sexy features
 
-- Smart AI skincare assistant: An advanced AI agent provides personalized recommendations, answers your questions, and offers guidance on overall skin health and concerns.
-- Seamless WhatsApp integration: Users can chat directly with the AI through WhatsApp to get instant skincare advice, routine reminders, and progress updates.
-- Dynamic automation with n8n: Automated workflows that validate and verify doctors.
+- Smart AI skincare assistant
+- Seamless WhatsApp integration
+- Dynamic automation with n8n
+
+<img src="./readme/demo/features.jpeg"/>
+
   
 <br><br>
 
@@ -107,9 +110,9 @@
 
 
 
-| Postman API 1                            | Postman API 2                       | Postman API 3                        |
+| Swagger APIs                           | Swagger Signup API                       |
 | --------------------------------------- | ------------------------------------- | ------------------------------------- |
-| ![Landing](./readme/demo/1440x1024.png) | ![fsdaf](./readme/demo/1440x1024.png) | ![fsdaf](./readme/demo/1440x1024.png) |
+| ![Landing](./readme/demo/swagger1.png) | ![fsdaf](./readme/demo/swagger2.png) |
 
 <br><br>
 
