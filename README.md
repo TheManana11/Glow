@@ -85,12 +85,25 @@
 <!-- Development & Testing -->
 <img src="./readme/title6.svg"/>
 
-### Add Title Here
+### Linear Board
+
+<img src="./readme/demo/linear.png"/>
+
+- Created a new ticket in Linear to track the feature or bug fix, clearly defining its scope and requirements.
+- Created a dedicated Git branch named after the ticket to keep changes isolated and organized.
+- Committed code regularly with descriptive messages referencing the ticket for clear traceability.
+- Pushed changes to the remote repository to share progress with the team.
+- Opened a Pull Request (PR) for code review, ensuring quality and collaboration.
+- Linked the PR to the Linear ticket, automatically updating its status during the workflow.
+- Merged the PR, which moved the ticket to “Done” in Linear, completing the development cycle.
+
+
+### Services, Validation and Testing Samples
 
 
 | Services                            | Validation                       | Testing                        |
 | --------------------------------------- | ------------------------------------- | ------------------------------------- |
-| ![Landing](./readme/demo/1440x1024.png) | ![fsdaf](./readme/demo/1440x1024.png) | ![fsdaf](./readme/demo/1440x1024.png) |
+| ![Landing](./readme/demo/service.png) | ![fsdaf](./readme/demo/validation.png) | ![fsdaf](./readme/demo/tests.png) |
 
 
 <br><br>
