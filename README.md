@@ -40,16 +40,29 @@
 
 ### User Screens (Mobile)
 
-| Login screen                            | Register screen                       | Register screen                       |
+| Login screen                            | Register screen                       | Home screen screen                       |
 | --------------------------------------- | ------------------------------------- | ------------------------------------- |
-| ![Landing](./readme/demo/1440x1024.png) | ![fsdaf](./readme/demo/1440x1024.png) | ![fsdaf](./readme/demo/1440x1024.png) |
+| ![Landing](./readme/demo/login.jpeg) | ![fsdaf](./readme/demo/signup.jpeg) | ![fsdaf](./readme/demo/home.jpeg) |
+
+| Analysis screen                            | Doctors screen                       | Overview screen screen                       |
+| --------------------------------------- | ------------------------------------- | ------------------------------------- |
+| ![Landing](./readme/demo/analysis.jpeg) | ![fsdaf](./readme/demo/doctors.jpeg) | ![fsdaf](./readme/demo/overview.jpeg) |
 
 
-### Admin Screens (Web)
+| History screen                            | Profile screen                       | Home screen after analysis screen                       |
+| --------------------------------------- | ------------------------------------- | ------------------------------------- |
+| ![Landing](./readme/demo/history.jpeg) | ![fsdaf](./readme/demo/profile.jpeg) | ![fsdaf](./readme/demo/home2.jpeg) |
 
-| Login screen                            | Register screen                       |
+
+
+| Overview screen after analysis                            | History screen after analysis                     |
+| --------------------------------------- | ------------------------------------- | ------------------------------------- |
+| ![Landing](./readme/demo/overview.jpeg) | ![fsdaf](./readme/demo/history2.jpeg) |
+
+
+<!-- | Login screen                            | Register screen                       |
 | --------------------------------------- | ------------------------------------- |
-| ![Landing](./readme/demo/1440x1024.png) | ![fsdaf](./readme/demo/1440x1024.png) |
+| ![Landing](./readme/demo/1440x1024.png) | ![fsdaf](./readme/demo/1440x1024.png) | -->
 
 
 <br><br>
