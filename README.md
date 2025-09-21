@@ -109,10 +109,14 @@
 | ![Landing](./readme/demo/service.png) | ![fsdaf](./readme/demo/validation.png) | ![fsdaf](./readme/demo/tests.png) |
 
 
+### Swagger APIs
 
-| Swagger APIs                           | Swagger Signup API                       |
-| --------------------------------------- | ------------------------------------- | ------------------------------------- |
-| ![Landing](./readme/demo/swagger1.png) | ![fsdaf](./readme/demo/swagger2.png) |
+<img src="./readme/demo/swagger1.png"/>
+
+### Swagger Signup API
+
+<img src="./readme/demo/swagger2.png"/>
+
 
 <br><br>
 
