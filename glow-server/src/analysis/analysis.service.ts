@@ -44,7 +44,7 @@ export class AnalysisService {
     const token = (req.headers as any).authorization;
     const user_id = this.tokenService.getUserIdFromToken(token);
 
-    const image = `https://76fa7983afaf.ngrok-free.app/uploads/analysis/${file_name}`;
+    const image = `https://e1112ec5b2ad.ngrok-free.app/uploads/analysis/${file_name}`;
     const res = await this.helperService.call_openAI(image);
     const res_final = JSON.parse(res);
 

@@ -63,18 +63,18 @@
 
 | AI Analysis                           | AI Analysis part 2                       | AI Agent integrated in Whatsapp                       |
 | --------------------------------------- | ------------------------------------- | ------------------------------------- |
-| ![Landing](./readme/demo/AI_analysis1-ezgif.com-video-to-gif-converter.gif) | ![fsdaf](./readme/demo/AI_analysis2-ezgif.com-video-to-gif-converter.gif) | ![fsdaf](./readme/demo/AI_agent1-ezgif.com-video-to-gif-converter.gif) |
+| ![Landing](./readme/demo/AI_analysis1.gif) | ![fsdaf](./readme/demo/AI_analysis2.gif) | ![fsdaf](./readme/demo/AI-Agent1.gif) |
 
 
 | AI Agent Integrated in Whatsapp                            | AI Agent Integrated in Whatsapp                       | Doctor Validation automated using n8n                        |
 | --------------------------------------- | ------------------------------------- | ------------------------------------- |
-| ![Landing](./readme/demo/AI_agent2-ezgif.com-video-to-gif-converter.gif) | ![fsdaf](./readme/demo/AI_agent3-ezgif.com-video-to-gif-converter.gif) | ![fsdaf](./readme/demo/Doctor_validation1-ezgif.com-video-to-gif-converter.gif) |
+| ![Landing](./readme/demo/AI-Agent2.gif) | ![fsdaf](./readme/demo/AI-Agent3.gif) | ![fsdaf](./readme/demo/AI-Agent4.gif) |
 
 
 
-| Doctor Validation automated using n8n                            |Doctor Validation automated using n8n                      |                        |
+| Doctor Validation automated using n8n                            |Doctor Validation automated using n8n                      |Doctor Validation automated using n8n                        |
 | --------------------------------------- | ------------------------------------- | ------------------------------------- |
-| ![Landing](./readme/demo/Doctor_validation2-ezgif.com-video-to-gif-converter.gif) | ![fsdaf](./readme/demo/Doctor_validation3-ezgif.com-video-to-gif-converter.gif) |  |
+| ![Landing](./readme/demo/Doctor_validation1.gif) | ![fsdaf](./readme/demo/Doctor_validation2.gif) | ![fsdaf](./readme/demo/Doctor_validation3.gif) |
 
 
 
