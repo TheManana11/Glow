@@ -97,6 +97,13 @@
 
 <br><br>
 
+### n8n Automation workflow
+
+<img src="./readme/demo/n8n.png"/>
+
+
+<br><br>
+
 
 ### AI Agent Process
 
