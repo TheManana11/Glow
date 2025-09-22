@@ -184,8 +184,7 @@ Examples include:
 
 ### Swagger APIs
 
-<img src="./readme/demo/swagger1.png"/>
+| All APIs                            | Signup API                       | Analysis API                        |
+| --------------------------------------- | ------------------------------------- | ------------------------------------- |
+| ![Landing](./readme/demo/swagger1.png) | ![fsdaf](./readme/demo/swagger2.png) | ![fsdaf](./readme/demo/swagger3.png) |
 
-### Swagger Signup API
-
-<img src="./readme/demo/swagger2.png"/>
