@@ -9,7 +9,7 @@
 > 
 > To make skincare guidance more accessible, Glow integrates with WhatsApp, where users can interact with an AI assistant for instant support. This assistant can answer questions about their analysis, suggest products, provide skincare tips, and help address any skin-related concerns in real-time.
 > 
-> Glow also tracks progress over time, helping users stay consistent and see measurable improvements. With its combination of advanced AI technology and smart reminders. Glow makes personalized skincare guidance simple, professional, and always within reach.
+> Glow also tracks progress over time, helping users stay consistent and see measurable improvements. With its combination of advanced AI technology and smart reminders, Glow makes personalized skincare guidance simple, professional, and always within reach.
 
 <br><br>
 
@@ -35,7 +35,6 @@
 
 <img src="./readme/demo/features.jpeg"/>
 
-  
 <br><br>
 
 <!-- Demo -->
@@ -51,37 +50,25 @@
 | --------------------------------------- | ------------------------------------- | ------------------------------------- |
 | ![Landing](./readme/demo/analysis.jpeg) | ![fsdaf](./readme/demo/doctors.jpeg) | ![fsdaf](./readme/demo/overview.jpeg) |
 
-
 | History screen                            | Profile screen                       | Home screen after analysis                        |
 | --------------------------------------- | ------------------------------------- | ------------------------------------- |
 | ![Landing](./readme/demo/history.jpeg) | ![fsdaf](./readme/demo/profile.jpeg) | ![fsdaf](./readme/demo/home2.jpeg) |
-
-
 
 | Overview screen after analysis                            | History screen after analysis                      |                        |
 | --------------------------------------- | ------------------------------------- | ------------------------------------- |
 | ![Landing](./readme/demo/overview.jpeg) | ![fsdaf](./readme/demo/history2.jpeg) |  |
 
-
-
 | AI Analysis                           | AI Analysis part 2                       | AI Agent integrated in Whatsapp                       |
 | --------------------------------------- | ------------------------------------- | ------------------------------------- |
 | ![Landing](./readme/demo/AI_analysis1.gif) | ![fsdaf](./readme/demo/AI_analysis2.gif) | ![fsdaf](./readme/demo/AI-Agent1.gif) |
-
 
 | AI Agent Integrated in Whatsapp                            | AI Agent Integrated in Whatsapp                       | Doctor Validation automated using n8n                        |
 | --------------------------------------- | ------------------------------------- | ------------------------------------- |
 | ![Landing](./readme/demo/AI-Agent2.gif) | ![fsdaf](./readme/demo/AI-Agent3.gif) | ![fsdaf](./readme/demo/AI-Agent4.gif) |
 
-
-
 | Doctor Validation automated using n8n                            |Doctor Validation automated using n8n                      |Doctor Validation automated using n8n                        |
 | --------------------------------------- | ------------------------------------- | ------------------------------------- |
 | ![Landing](./readme/demo/Doctor_validation1.gif) | ![fsdaf](./readme/demo/Doctor_validation2.gif) | ![fsdaf](./readme/demo/Doctor_validation3.gif) |
-
-
-
-
 
 <br><br>
 
@@ -100,14 +87,11 @@
 - Linked the PR to the Linear ticket, automatically updating its status during the workflow.
 - Merged the PR, which moved the ticket to “Done” in Linear, completing the development cycle.
 
-
 ### Services, Validation and Testing Samples
-
 
 | Services                            | Validation                       | Testing                        |
 | --------------------------------------- | ------------------------------------- | ------------------------------------- |
 | ![Landing](./readme/demo/service.png) | ![fsdaf](./readme/demo/validation.png) | ![fsdaf](./readme/demo/tests.png) |
-
 
 ### Swagger APIs
 
@@ -117,6 +101,71 @@
 
 <img src="./readme/demo/swagger2.png"/>
 
+<br><br>
+
+
+### AI Agent Process
+
+Our AI agent is integrated with **WhatsApp** to assist users with their skincare journey. It provides instant, personalized support by answering questions about skin analyses and general skincare advice.
+
+Below is a simple breakdown of how the process works:
+
+---
+
+### **1. Inputs**
+
+- **User Message**  
+  A user sends a message on WhatsApp, for example:
+  - "Show me my latest skin analysis."
+  - "What products should I use for acne?"
+  - "Remind me about my night routine."
+
+- **User Data**  
+  The system has access to the user’s stored:
+  - Skin analysis results  
+  - Skincare history  
+  - Routine preferences  
+
+---
+
+### **2. Steps & Decisions**
+
+The AI agent follows these steps to process the request:
+
+1. **Receive the Message**  
+   The message arrives through WhatsApp and is forwarded to the backend system.
+
+2. **Identify the User & Intent**  
+   - The user is identified based on their phone number.  
+   - The AI determines what the user wants to do (e.g., view results, get product advice, set a reminder).
+
+3. **Fetch Relevant Data (if needed)**  
+   If the user is asking about a previous analysis or their skincare history, the backend retrieves the data from the database.
+
+4. **AI Agent Reasoning**  
+   - The message and any relevant data are sent to the AI model.  
+   - The AI decides how to respond:
+     - If related to a **previous analysis**, it provides a clear explanation.  
+     - If it’s a **general question**, it gives professional advice or product recommendations.
+
+5. **Generate Response**  
+   The AI prepares a response in simple, user-friendly language.
+
+6. **Send Reply via WhatsApp**  
+   The personalized response is sent instantly back to the user.
+
+---
+
+### **3. Outputs**
+
+The final output is a helpful, actionable response sent to the user.  
+Examples include:
+
+- *"Your last analysis showed mild dryness and early acne formation. I recommend using a gentle cleanser and a hydrating moisturizer."*  
+- *"Make sure to apply sunscreen every morning, even on cloudy days!"*  
+- *"Reminder set: I’ll message you at 9 PM to start your night skincare routine."*
+
+---
 
 <br><br>
 
@@ -136,5 +185,3 @@
 - Finally, once the feature is fully tested and approved, the staging branch is merged into the main branch. This triggers GitHub Actions to rerun the same pipeline steps, but this time the deployment targets the production EC2 instance, making the new feature live for end users.
 
 <img src="./readme/demo/deployment.jpeg"/>
-
-<br><br>
