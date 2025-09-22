@@ -20,7 +20,7 @@
 <img src="./readme/entity relation diagram.png"/>
 <br><br>
 
-### System Architecture
+### Component Diagram
 <img src="./readme/arch.png"/>
 <br><br>
 
