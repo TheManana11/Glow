@@ -18,6 +18,8 @@
 
 ### Entity Relation Diagram
 <img src="./readme/entity relation diagram.png"/>
+
+- Eraser URL: https://app.eraser.io/workspace/VNwMgtr53p9TNeyyK01Q?origin=share
 <br><br>
 
 ### Component Diagram
@@ -92,14 +94,6 @@
 | Services                            | Validation                       | Testing                        |
 | --------------------------------------- | ------------------------------------- | ------------------------------------- |
 | ![Landing](./readme/demo/service.png) | ![fsdaf](./readme/demo/validation.png) | ![fsdaf](./readme/demo/tests.png) |
-
-### Swagger APIs
-
-<img src="./readme/demo/swagger1.png"/>
-
-### Swagger Signup API
-
-<img src="./readme/demo/swagger2.png"/>
 
 <br><br>
 
@@ -188,3 +182,12 @@ Examples include:
 - Finally, once the feature is fully tested and approved, the staging branch is merged into the main branch. This triggers GitHub Actions to rerun the same pipeline steps, but this time the deployment targets the production EC2 instance, making the new feature live for end users.
 
 <img src="./readme/demo/deployment.jpeg"/>
+
+
+### Swagger APIs
+
+<img src="./readme/demo/swagger1.png"/>
+
+### Swagger Signup API
+
+<img src="./readme/demo/swagger2.png"/>
