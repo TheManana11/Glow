@@ -104,7 +104,6 @@ Our AI agent is integrated with **WhatsApp** to assist users with their skincare
 
 Below is a simple breakdown of how the process works:
 
----
 
 ### **1. Inputs**
 
@@ -120,7 +119,6 @@ Below is a simple breakdown of how the process works:
   - Skincare history  
   - Routine preferences  
 
----
 
 ### **2. Steps & Decisions**
 
@@ -148,7 +146,7 @@ The AI agent follows these steps to process the request:
 6. **Send Reply via WhatsApp**  
    The personalized response is sent instantly back to the user.
 
----
+
 
 ### **3. Outputs**
 
@@ -162,7 +160,7 @@ Examples include:
 
 <img src="./readme/demo/BPMN.png"/>
 
----
+
 
 <br><br>
 
