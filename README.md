@@ -165,6 +165,9 @@ Examples include:
 - *"Make sure to apply sunscreen every morning, even on cloudy days!"*  
 - *"Reminder set: I’ll message you at 9 PM to start your night skincare routine."*
 
+
+<img src="./readme/demo/BPMN.png"/>
+
 ---
 
 <br><br>
