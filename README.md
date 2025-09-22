@@ -129,9 +129,9 @@ The AI agent follows these steps to process the request:
 
 2. **Identify the User & Intent**  
    - The user is identified based on their phone number.  
-   - The AI determines what the user wants to do (e.g., view results, get product advice, set a reminder).
+   - The AI determines what the user wants to do (e.g., view results, get product advice).
 
-3. **Fetch Relevant Data (if needed)**  
+3. **Fetch Relevant Data**  
    If the user is asking about a previous analysis or their skincare history, the backend retrieves the data from the database.
 
 4. **AI Agent Reasoning**  
@@ -150,12 +150,7 @@ The AI agent follows these steps to process the request:
 
 ### **3. Outputs**
 
-The final output is a helpful, actionable response sent to the user.  
-Examples include:
-
-- *"Your last analysis showed mild dryness and early acne formation. I recommend using a gentle cleanser and a hydrating moisturizer."*  
-- *"Make sure to apply sunscreen every morning, even on cloudy days!"*  
-- *"Reminder set: I’ll message you at 9 PM to start your night skincare routine."*
+The final output is a helpful, actionable response sent to the user based on what they requested, either details about their analysis or general recomnedations related to skin.  
 
 
 <img src="./readme/demo/BPMN.png"/>
