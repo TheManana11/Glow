@@ -111,6 +111,8 @@ Our AI agent is integrated with **WhatsApp** to assist users with their skincare
 
 Below is a simple breakdown of how the process works:
 
+<img src="./readme/demo/BPMN.png"/>
+
 
 ### **1. Inputs**
 
@@ -158,10 +160,6 @@ The AI agent follows these steps to process the request:
 ### **3. Outputs**
 
 The final output is a helpful, actionable response sent to the user based on what they requested, either details about their analysis or general recomnedations related to skin.  
-
-
-<img src="./readme/demo/BPMN.png"/>
-
 
 
 <br><br>
